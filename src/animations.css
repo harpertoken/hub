@@ -1,0 +1,272 @@
+/* Silvery flow animation for empty state card */
+.silvery-flow {
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.silvery-flow:hover {
+  transform: translateY(-2px);
+}
+
+.silvery-flow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.5) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: skewX(-25deg);
+  transition: all 0.75s ease;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.silvery-flow:hover::before {
+  animation: silverFlow 1.5s ease-in-out infinite;
+}
+
+/* Add a subtle shimmer effect to the text as well */
+.silvery-flow:hover p {
+  background-image: linear-gradient(
+    to right,
+    #000 0%,
+    #333 10%,
+    #000 20%
+  );
+  background-size: 200% auto;
+  color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: textShimmer 2s linear infinite;
+  transition: all 0.3s ease;
+}
+
+@keyframes silverFlow {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 200%;
+  }
+}
+
+@keyframes textShimmer {
+  to {
+    background-position: 200% center;
+  }
+}
+
+/* Coral theme version */
+.theme-coral .silvery-flow::before {
+  background: linear-gradient(
+    to right,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(198, 92, 93, 0.1) 50%,
+    rgba(198, 92, 93, 0.2) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+/* Slide in from right animation for AuthRemovedBanner */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out forwards;
+  transform-origin: right center;
+}
+
+/* Pulse animation for attention */
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.1);
+  }
+  70% {
+    box-shadow: 0 0 0 6px rgba(0, 0, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0);
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s infinite;
+}
+
+.dots {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.dot {
+  width: 8px;
+  height: 8px;
+  margin: 0 4px;
+  background-color: #bbb;
+  border-radius: 50%;
+  animation: vibrate 0.5s linear infinite alternate;
+}
+
+.dot:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.dot:nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+@keyframes vibrate {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-2px);
+  }
+}
+
+/* Recipe icon animations */
+@keyframes recipeIconSpin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes recipeIconPulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes recipeIconBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.recipe-card svg:hover {
+  animation: recipeIconPulse 0.6s ease-in-out;
+}
+
+.recipe-card header svg:hover {
+  animation: recipeIconSpin 0.8s ease-in-out;
+}
+
+.recipe-card section svg:hover {
+  animation: recipeIconBounce 0.6s ease-in-out;
+}
+
+/* Different animation for different icon types */
+.recipe-card .lucide-zap:hover {
+  animation: recipeIconPulse 0.6s ease-in-out;
+  color: #f59e0b;
+}
+
+.recipe-card .lucide-image:hover,
+.recipe-card .lucide-mic:hover,
+.recipe-card .lucide-video:hover,
+.recipe-card .lucide-volume-2:hover {
+  animation: recipeIconBounce 0.6s ease-in-out;
+  color: #3b82f6;
+}
+
+.recipe-card .lucide-code:hover,
+.recipe-card .lucide-terminal:hover,
+.recipe-card .lucide-file-code:hover {
+  animation: recipeIconSpin 0.8s ease-in-out;
+  color: #10b981;
+}
+
+/* Header navigation link animations */
+@keyframes navLinkWave {
+  0% {
+    background-position: -100% 0;
+    opacity: 0.7;
+  }
+  100% {
+    background-position: 200% 0;
+    opacity: 1;
+  }
+}
+
+.nav-link-wave {
+  position: relative;
+  overflow: hidden;
+}
+
+.nav-link-wave::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.2) 25%,
+    rgba(255, 255, 255, 0.3) 50%,
+    rgba(255, 255, 255, 0.2) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  background-size: 200% 100%;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+
+.nav-link-wave:hover::before {
+  opacity: 1;
+  animation: navLinkWave 1.5s ease-in-out;
+}
+
+.nav-link-wave span {
+  position: relative;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+
+.nav-link-wave:hover span {
+  transform: scale(1.05);
+}
+
+/* Coral theme version of the nav link wave */
+.theme-coral .nav-link-wave::before {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(198, 92, 93, 0.1) 25%,
+    rgba(198, 92, 93, 0.2) 50%,
+    rgba(198, 92, 93, 0.1) 75%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
