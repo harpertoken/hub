@@ -1,0 +1,310 @@
+/* Base theme styles */
+:root {
+  --bg-primary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #6b7280;
+  --border-color: #f3f4f6;
+  --accent-color: #000000;
+  --button-hover: #f9fafb;
+}
+
+/* White theme (default) */
+.theme-white {
+  --bg-primary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #6b7280;
+  --border-color: #f3f4f6;
+  --accent-color: #000000;
+  --button-hover: #f9fafb;
+}
+
+/* Coral theme */
+.theme-coral {
+  --bg-primary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #6b7280;
+  --border-color: #f3f4f6;
+  --accent-color: #c65c5d;
+  --button-hover: #fdf2f2;
+}
+
+/* Default theme is now handled by system preference - no separate CSS needed */
+
+/* Light theme */
+.theme-light {
+  --bg-primary: #ffffff;
+  --text-primary: #000000;
+  --text-secondary: #666666;
+  --border-color: #e5e5e5;
+  --accent-color: #0066cc;
+  --button-hover: #f0f8ff;
+}
+
+/* Dark theme */
+.theme-dark {
+  --bg-primary: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #cccccc;
+  --border-color: #404040;
+  --accent-color: #4da6ff;
+  --button-hover: #2a2a2a;
+}
+
+/* Apply theme variables */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark theme overrides for common Tailwind classes */
+.theme-dark,
+.theme-dark * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-dark .bg-white,
+.theme-dark.bg-white {
+  background-color: var(--bg-primary) !important;
+}
+
+.theme-dark .text-black,
+.theme-dark.text-black {
+  color: var(--text-primary) !important;
+}
+
+.theme-dark .text-gray-500,
+.theme-dark .text-gray-600,
+.theme-dark .text-gray-700,
+.theme-dark .text-gray-400 {
+  color: var(--text-secondary) !important;
+}
+
+.theme-dark .border-gray-50,
+.theme-dark .border-gray-100,
+.theme-dark .border-gray-200 {
+  border-color: var(--border-color) !important;
+}
+
+.theme-dark .bg-gray-50,
+.theme-dark .bg-gray-100 {
+  background-color: var(--bg-secondary) !important;
+}
+
+/* Dark theme for specific components */
+.theme-dark header,
+.theme-dark footer,
+.theme-dark main,
+.theme-dark .min-h-screen {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+.theme-dark .fixed.top-0 {
+  background-color: rgba(26, 26, 26, 0.95) !important;
+  border-color: var(--border-color) !important;
+}
+
+.theme-dark .backdrop-blur-md {
+  background-color: rgba(26, 26, 26, 0.7) !important;
+}
+
+/* Dark theme for modals and overlays */
+.theme-dark .fixed.inset-0 {
+  background-color: rgba(0, 0, 0, 0.5) !important;
+}
+
+.theme-dark .rounded,
+.theme-dark .rounded-md,
+.theme-dark .rounded-lg {
+  background-color: var(--bg-primary) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Dark theme for buttons and interactive elements */
+.theme-dark button {
+  color: var(--text-secondary) !important;
+}
+
+.theme-dark button:hover {
+  color: var(--text-primary) !important;
+}
+
+/* Dark theme for input placeholders */
+.theme-dark input::placeholder {
+  color: var(--text-secondary) !important;
+  opacity: 0.7;
+}
+
+/* Dark theme for specific text colors */
+.theme-dark .text-xs,
+.theme-dark .text-sm,
+.theme-dark .text-base,
+.theme-dark .text-lg,
+.theme-dark .text-xl,
+.theme-dark .text-2xl {
+  color: var(--text-primary) !important;
+}
+
+/* Dark theme for hover states */
+.theme-dark .hover\\:text-gray-600:hover,
+.theme-dark .hover\\:text-black:hover {
+  color: var(--accent-color) !important;
+}
+
+/* Backdrop blur effect for glass UI */
+.backdrop-blur-md {
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+/* Smooth transitions for header */
+.fixed.top-0 {
+  transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Direct application of coral theme - more aggressive selectors */
+.theme-coral button,
+html.theme-coral button {
+  transition: color 0.2s, background-color 0.2s, border-color 0.2s;
+}
+
+.theme-coral button:hover,
+html.theme-coral button:hover {
+  color: #c65c5d !important;
+}
+
+.theme-coral a:hover,
+html.theme-coral a:hover {
+  color: #c65c5d !important;
+}
+
+.theme-coral .hover\:text-black:hover,
+html.theme-coral .hover\:text-black:hover {
+  color: #c65c5d !important;
+}
+
+/* Add a visible indicator for debugging */
+html.theme-coral::before {
+  content: "CORAL THEME ACTIVE";
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(198, 92, 93, 0.9);
+  color: white;
+  padding: 5px 10px;
+  font-size: 12px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.theme-coral header,
+html.theme-coral header {
+  border-bottom-color: rgba(198, 92, 93, 0.3) !important;
+  box-shadow: 0 1px 3px rgba(198, 92, 93, 0.1) !important;
+}
+
+.theme-coral footer,
+html.theme-coral footer {
+  border-top-color: rgba(198, 92, 93, 0.3) !important;
+}
+
+/* Logo styling for all themes */
+.tolerable-logo {
+  color: var(--text-primary);
+  transition: all 0.3s ease;
+  filter: none;
+}
+
+/* Dark mode logo styling */
+html.theme-dark .tolerable-logo,
+.theme-dark .tolerable-logo {
+  color: var(--text-primary);
+  filter: brightness(1.1) contrast(1.1);
+}
+
+/* Light mode logo styling */
+html.theme-light .tolerable-logo,
+.theme-light .tolerable-logo {
+  color: var(--text-primary);
+  filter: brightness(0.9) contrast(1.2);
+}
+
+/* Default theme logo styling */
+html.theme-default .tolerable-logo,
+.theme-default .tolerable-logo {
+  color: var(--text-primary);
+  filter: brightness(1) contrast(1);
+}
+
+/* Coral theme logo styling */
+.theme-coral .tolerable-logo,
+html.theme-coral .tolerable-logo {
+  color: var(--text-primary);
+  filter: hue-rotate(340deg) saturate(1.5) brightness(1.1);
+}
+
+/* Logo hover effects */
+.tolerable-logo:hover {
+  filter: brightness(1.2) contrast(1.1);
+  transform: scale(1.02);
+}
+
+.theme-coral button.primary,
+html.theme-coral button.primary,
+.theme-coral .primary-button,
+html.theme-coral .primary-button {
+  background-color: #c65c5d !important;
+  color: white !important;
+  border-color: #c65c5d !important;
+}
+
+/* Add a subtle coral tint to the background */
+.theme-coral::after,
+html.theme-coral::after {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(rgba(198, 92, 93, 0.02), rgba(198, 92, 93, 0.01));
+  pointer-events: none;
+  z-index: -1;
+}
+
+.theme-coral .border-accent {
+  border-color: var(--accent-color);
+}
+
+/* Theme-specific header styles */
+.theme-coral header a:hover,
+.theme-coral header button:hover {
+  color: var(--accent-color);
+}
+
+/* Theme-specific footer styles */
+.theme-coral footer a:hover {
+  color: var(--accent-color);
+}
+
+/* Theme-specific form styles */
+.theme-coral input:focus,
+.theme-coral textarea:focus,
+.theme-coral select:focus {
+  border-color: var(--accent-color);
+  outline-color: var(--accent-color);
+}
+
+/* Theme-specific accent elements */
+.theme-coral .accent-element {
+  color: var(--accent-color);
+}
+
+.theme-coral .accent-bg {
+  background-color: var(--accent-color);
+}
+
+.theme-coral .accent-border {
+  border-color: var(--accent-color);
+}
