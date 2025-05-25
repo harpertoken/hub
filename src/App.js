@@ -235,7 +235,7 @@ const MainContent = () => {
   return (
     <div className="min-h-screen relative" style={{backgroundColor: 'var(--bg-primary)'}}>
       {/* Header - Hidden when modals are open */}
-      {!isModalOpen && (
+      {!isModalOpen && !isMenuOpen && (
         <div
           className="fixed top-0 z-50 w-full backdrop-blur-md transition-all duration-300 border-b"
           style={{
