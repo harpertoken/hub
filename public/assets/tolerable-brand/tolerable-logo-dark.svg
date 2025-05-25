@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="400" height="100" viewBox="0 0 400 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Tolerable Logo - Em Dash Style - Dark Mode Version -->
+  
+  <!-- Left decorative line -->
+  <line x1="10" y1="50" x2="70" y2="50" stroke="#ffffff" stroke-width="2.5" opacity="0.9"/>
+  
+  <!-- Main text -->
+  <text x="200" y="60" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif" font-size="28" font-weight="700" fill="#ffffff">
+    TOLERABLE
+  </text>
+  
+  <!-- Right decorative line -->
+  <line x1="330" y1="50" x2="390" y2="50" stroke="#ffffff" stroke-width="2.5" opacity="0.9"/>
+</svg>
