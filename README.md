@@ -2,7 +2,7 @@
 
 > **AI-powered media and content analysis platform**
 
-[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/bniladridas/tolerable-prod)
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/bniladridas/tolerable)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Node](https://img.shields.io/badge/node-%3E%3D16.0.0-brightgreen.svg)](https://nodejs.org/)
 [![React](https://img.shields.io/badge/react-18.x-61dafb.svg)](https://reactjs.org/)
@@ -58,33 +58,52 @@ pnpm run kill-server
 tolerable/
 ├── src/                          # React frontend source code
 │   ├── components/               # React components
-│   │   ├── recipes/             # Recipe components for cookbook
-│   │   ├── Education.js         # Education component with ArXiv integration
-│   │   ├── AILab.js            # AI Lab component
-│   │   ├── Diagnostics.js      # Browser diagnostics
-│   │   └── ...                 # Other components
-│   ├── contexts/               # React contexts
-│   ├── services/               # Frontend services
-│   └── utils/                  # Utility functions
-├── public/                      # Static assets
-├── build/                       # Built React application
-├── logo/                        # Logo assets (em dash style)
-├── docs/                        # Documentation
+│   │   ├── recipes/             # Recipe components for cookbook & AI
+│   │   ├── Education.js         # Education component
+│   │   ├── AILab.js             # AI Lab component
+│   │   ├── Diagnostics.js       # Browser diagnostics
+│   │   └── ...                  # Other components
+│   ├── contexts/                # React contexts (Audio, Legal, Theme, etc.)
+│   ├── services/                # Frontend services
+│   ├── utils/                   # Utility functions
+│   ├── hooks/                   # Custom React hooks
+│   ├── index.js                 # React entry point
+│   └── App.js                   # Main router setup
+├── api/                         # Serverless API endpoints (Vercel)
+│   └── index.js                 # Main API handler
+├── public/                      # Static assets (favicon, manifest, etc.)
+├── static/                      # Static build assets (media, css, js)
+│   ├── media/                   # Fonts, images, etc.
+│   ├── css/                     # CSS bundles
+│   └── js/                      # JS bundles
+├── build/                       # Built React application (output)
+├── logo/                        # Logo assets
 ├── uploads/                     # File upload directory
+├── scripts/                     # Utility scripts (e.g., favicon generator)
+├── docs/                        # Documentation
+│   ├── meta/                    # Meta documentation (CHANGELOG, etc.)
+│   ├── VERCEL_DEPLOYMENT_GUIDE.md
+│   ├── GEMINI_INTEGRATION_MAP.md
+│   └── UI_COMPONENT_ROUTING_MAP.md
 ├── consolidated-server.js       # Main Express.js server
-├── kill-server.js              # Server management utility
+├── kill-server.js               # Server management utility
 ├── improved-arxiv-search-regex.js # ArXiv search module
-├── copy-changelog.js           # Documentation script
-├── package.json                # Dependencies and scripts
-└── README.md                   # This file
+├── copy-changelog.js            # Documentation script
+├── package.json                 # Dependencies and scripts
+├── tailwind.config.js           # Tailwind CSS config
+├── vercel.json                  # Vercel deployment config
+├── postcss.config.js            # PostCSS config
+├── .gitignore                   # Git ignore rules
+├── README.md                    # This file
+└── ...                          # Other config/scripts
 ```
 
 ## Installation
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/bniladridas/tolerable-prod.git
-   cd tolerable-prod
+   git clone https://github.com/bniladridas/tolerable.git
+   cd tolerable
    ```
 
 2. **Install dependencies:**
@@ -149,7 +168,7 @@ vercel --prod
 - ✅ Preview deployments for branches
 - ✅ Built-in analytics
 
-For detailed deployment instructions, see [Vercel Deployment Guide](docs/VERCEL_DEPLOYMENT_GUIDE.md).
+For detailed deployment instructions, see [Vercel Deployment Guide](https://tolerable.vercel.app/docs/VERCEL_DEPLOYMENT_GUIDE.md).
 
 ## AI Model
 
@@ -163,4 +182,10 @@ This application uses **Google Gemini 1.5 Flash** exclusively for all AI-powered
 
 ## License
 
-MIT License - see LICENSE file for details.
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## About
+
+Tolerable. Crafted for clarity.
+
+Visit us at [tolerable.vercel.app](https://tolerable.vercel.app/) 
