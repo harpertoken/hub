@@ -2,7 +2,7 @@ import React from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
-const EducationSearchRecipe = () => {
+const EduSearchRecipe = () => {
   return (
     <article className="recipe-card border border-gray-100 rounded-lg overflow-hidden shadow-sm">
       {/* Recipe Header - Simplified */}
@@ -347,4 +347,4 @@ app.post('/education-query', express.json(), async (req, res) => {
   );
 };
 
-export default EducationSearchRecipe;
+export default EduSearchRecipe;

@@ -1,6 +1,6 @@
 import React from 'react';
 
-const LoadingAnimation = () => {
+const LoadingAnim = () => {
   return (
     <div className="flex items-center justify-center py-2">
       <div className="dots">
@@ -12,4 +12,4 @@ const LoadingAnimation = () => {
   );
 };
 
-export default LoadingAnimation;
+export default LoadingAnim;

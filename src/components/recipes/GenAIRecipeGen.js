@@ -7,7 +7,7 @@ import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
  *
  * This component explains how Tolerable uses AI model orchestration to create and manage recipes
  */
-const GenAIRecipeGenerationRecipe = () => {
+const GenAIRecipeGen = () => {
   return (
     <article className="recipe-card border border-gray-100 rounded-lg overflow-hidden shadow-sm">
       {/* Recipe Header - Simplified */}
@@ -274,4 +274,4 @@ async function generateRecipeWithFallback(recipeType, userContext) {
   );
 };
 
-export default GenAIRecipeGenerationRecipe;
+export default GenAIRecipeGen;

@@ -8,7 +8,7 @@ import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
  * This recipe demonstrates how to implement AI model orchestration in applications,
  * allowing for intelligent routing of requests to different AI models based on task requirements.
  */
-const AIModelOrchestrationRecipe = () => {
+const AIModelOrchRecipe = () => {
   return (
     <article className="recipe-card border border-gray-100 rounded-lg overflow-hidden shadow-sm">
       {/* Recipe Header - Simplified */}
@@ -263,4 +263,4 @@ async callGeminiModel(model, prompt, options) {
   );
 };
 
-export default AIModelOrchestrationRecipe;
+export default AIModelOrchRecipe;

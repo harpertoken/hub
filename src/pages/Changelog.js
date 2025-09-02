@@ -13,7 +13,7 @@ marked.setOptions({
   smartypants: true,
 });
 
-const ConsolidatedChangelog = () => {
+const Changelog = () => {
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -310,4 +310,4 @@ const ConsolidatedChangelog = () => {
   );
 };
 
-export default ConsolidatedChangelog;
+export default Changelog;
