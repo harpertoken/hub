@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
-import CookbookSimple from './CookbookSimple';
+import CookbookSimple from '../components/CookbookSimple';
 import EduSuggestRecipe from './recipes/EduSuggestRecipe';
 import SoftwareStackRecipe from './recipes/SoftwareStackRecipe';
 import CloudStorageRecipe from './recipes/CloudStorageRecipe';
