@@ -15,9 +15,11 @@ paths-ignore:
   - dist
   - .cache
   - static
+  - uploads
 
 paths:
   - src
   - api
   - scripts
   - consolidatedServer.js
+  - package.json
