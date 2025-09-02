@@ -27,6 +27,6 @@ src/
 1. Analyze current file dependencies
 2. Create new directory structure
 3. Move files systematically
-4. Update all import statements
+4. Update all import statements and documentation
 5. Test and verify functionality
 
