@@ -15,7 +15,7 @@
       "src": "api/index.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["consolidated-server.js"]
+        "includeFiles": ["consolidatedServer.js"]
       }
     }
   ],

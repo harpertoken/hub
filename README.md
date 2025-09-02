@@ -26,7 +26,7 @@
 ## Server Architecture
 
 ### Main Server
-- **`consolidated-server.js`** - Primary Express.js server (port 3030)
+- **`consolidatedServer.js`** - Primary Express.js server (port 3030)
   - Handles all API endpoints
   - Serves built React application
   - Manages file uploads and processing

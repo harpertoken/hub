@@ -1,4 +1,4 @@
-const app = require('../consolidated-server');
+const app = require('../consolidatedServer');
 
 // Export the Express app as a serverless function
 module.exports = async (req, res) => {
