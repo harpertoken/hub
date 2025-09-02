@@ -42,11 +42,17 @@ jobs:
 
     - name: Verify documentation files
       run: |
+        # List current directory structure for debugging
+        echo "Current directory structure:"
+        find docs/ -name "*.md" | head -10
+
         # Check for essential documentation files
         essential_docs=("docs/meta/Changelog.md")
         for doc in "${essential_docs[@]}"; do
           if [ ! -f "$doc" ]; then
             echo "❌ $doc is missing!"
+            echo "Files in docs/meta/:"
+            ls -la docs/meta/ || echo "docs/meta/ not found"
             exit 1
           fi
         done
