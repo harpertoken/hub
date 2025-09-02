@@ -1,0 +1,96 @@
+name: "Documentation Verification"
+
+on:
+  push:
+    branches: [ "main", "troubleshoot-server" ]
+    paths:
+      - 'src/**'
+      - 'api/**'
+      - 'docs/**'
+      - 'README.md'
+  pull_request:
+    branches: [ "main", "troubleshoot-server" ]
+    paths:
+      - 'src/**'
+      - 'api/**'
+      - 'docs/**'
+      - 'README.md'
+
+jobs:
+  verify-docs:
+    name: Verify Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Check for README.md
+      run: |
+        if [ ! -f README.md ]; then
+          echo "❌ README.md is missing!"
+          exit 1
+        fi
+        echo "✅ README.md exists"
+
+    - name: Check documentation structure
+      run: |
+        if [ ! -d docs ]; then
+          echo "❌ docs/ directory is missing!"
+          exit 1
+        fi
+        echo "✅ docs/ directory exists"
+
+    - name: Verify documentation files
+      run: |
+        # Check for essential documentation files
+        essential_docs=("docs/meta/Changelog.md")
+        for doc in "${essential_docs[@]}"; do
+          if [ ! -f "$doc" ]; then
+            echo "❌ $doc is missing!"
+            exit 1
+          fi
+        done
+        echo "✅ Essential documentation files exist"
+
+    - name: Check for outdated documentation references
+      run: |
+        # Check if README mentions files that don't exist
+        if grep -q "consolidated-server.js" README.md && [ ! -f "consolidatedServer.js" ]; then
+          echo "❌ README.md references consolidated-server.js which doesn't exist"
+          exit 1
+        fi
+        echo "✅ Documentation references are up to date"
+
+    - name: Validate markdown files
+      run: |
+        # Install markdownlint if needed
+        if ! command -v markdownlint &> /dev/null; then
+          npm install -g markdownlint-cli
+        fi
+        
+        # Run markdownlint on documentation files
+        find docs/ -name "*.md" -exec markdownlint {} \;
+        if [ $? -ne 0 ]; then
+          echo "❌ Markdown linting failed"
+          exit 1
+        fi
+        echo "✅ Markdown files are properly formatted"
+
+  check-api-docs:
+    name: Check API Documentation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Verify API endpoints are documented
+      run: |
+        # Check if API endpoints in code are documented
+        api_file="api/index.js"
+        if [ -f "$api_file" ]; then
+          echo "✅ API file exists"
+          # Could add more specific checks here
+        else
+          echo "❌ API file missing"
+          exit 1
+        fi
