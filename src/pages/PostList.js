@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Edit2, Trash2, Eye, GripVertical, MessageSquare, Play } from 'lucide-react';
-import LoadingAnimation from './LoadingAnimation';
+import LoadingAnim from '../components/LoadingAnim';
 import { useAudio } from '../contexts/AudioContext';
-import DeleteConfirmationModal from './DeleteConfirmationModal';
+import DeleteConfirmModal from '../components/DeleteConfirmModal';
 
 
 /**
@@ -30,7 +30,7 @@ const PostList = ({ posts, onEdit, onDelete, onPreview, onReorder, loading, onCr
     setDeleteModalOpen(true);
   };
   if (loading) {
-    return <LoadingAnimation />;
+    return <LoadingAnim />;
   }
 
   if (!posts.length) {
@@ -170,7 +170,7 @@ const PostList = ({ posts, onEdit, onDelete, onPreview, onReorder, loading, onCr
 
   return (
     <>
-      <DeleteConfirmationModal
+      <DeleteConfirmModal
         isOpen={deleteModalOpen}
         onClose={() => setDeleteModalOpen(false)}
         onConfirm={onDelete}

@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import ExternalLinkModal from '../pages/ExternalLinkModal';
+import ExtLinkModal from '../components/ExtLinkModal';
 
 // Create context
 const ExternalLinkContext = createContext();
@@ -59,7 +59,7 @@ export const ExternalLinkProvider = ({ children }) => {
   return (
     <ExternalLinkContext.Provider value={{ openExternalLink, closeExternalLink }}>
       {children}
-      <ExternalLinkModal
+      <ExtLinkModal
         url={modalState.url}
         isOpen={modalState.isOpen}
         onClose={closeExternalLink}

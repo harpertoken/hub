@@ -10,7 +10,7 @@ import Settings from './pages/Settings';
 import Footer from './Footer';
 import AuthRemovedBanner from './pages/AuthRemovedBanner';
 // import ParticlesBackground from './components/ParticlesBackground'; // Removed as requested
-import LoadingAnimation from './components/LoadingAnimation';
+import LoadingAnim from './components/LoadingAnim';
 // Removed FloatingActionButton and NewPostButton imports
 // Voice Assistant removed as requested
 
@@ -25,7 +25,7 @@ import TermsOfService from './TermsOfService';
 import CompanyLegal from './pages/CompanyLegal';
 import AIUsagePolicy from './AIUsagePolicy';
 import About from './pages/About';
-import ConsolidatedChangelog from './pages/ConsolidatedChangelog';
+import Changelog from './pages/Changelog';
 import Education from './pages/Education';
 import Cookbook from './pages/Cookbook';
 import CookbookSimple from './components/CookbookSimple';
@@ -227,7 +227,7 @@ const MainContent = () => {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: 'var(--bg-primary)'}}>
-        <LoadingAnimation />
+        <LoadingAnim />
       </div>
     );
   }
@@ -425,7 +425,7 @@ const App = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center" style={{backgroundColor: 'var(--bg-primary)'}}>
-        <LoadingAnimation />
+        <LoadingAnim />
       </div>
     );
   }
@@ -479,7 +479,7 @@ const App = () => {
                     <Route path="/brand" element={<Navigate to="/about" replace />} />
                     <Route path="/cookbook" element={<Cookbook />} />
                     <Route path="/cookbook-simple" element={<CookbookSimple />} />
-                    <Route path="/changelog" element={<ConsolidatedChangelog />} />
+                    <Route path="/changelog" element={<Changelog />} />
                     <Route path="/education" element={<Education />} />
                     <Route path="/diagnostics" element={<Diagnostics />} />
                     <Route path="/edi" element={<EDI />} />

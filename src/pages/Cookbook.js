@@ -3,18 +3,18 @@ import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { ChevronRight, ArrowLeft } from 'lucide-react';
 import CookbookSimple from './CookbookSimple';
-import EducationSuggestionsRecipe from './recipes/EducationSuggestionsRecipe';
+import EduSuggestRecipe from './recipes/EduSuggestRecipe';
 import SoftwareStackRecipe from './recipes/SoftwareStackRecipe';
 import CloudStorageRecipe from './recipes/CloudStorageRecipe';
-import EducationSearchRecipe from './recipes/EducationSearchRecipe';
+import EduSearchRecipe from './recipes/EduSearchRecipe';
 import AILabRecipe from './recipes/AILabRecipe';
-import AdvancedFeaturesRecipe from './recipes/AdvancedFeaturesRecipe';
+import AdvFeaturesRecipe from './recipes/AdvFeaturesRecipe';
 import ModalRecipe from './recipes/ModalRecipe';
 import AIIntegrationRecipe from './recipes/AIIntegrationRecipe';
 import CodeEditorRecipe from './recipes/CodeEditorRecipe';
-import AITechniquesRecipe from './recipes/AITechniquesRecipe';
-import AIModelOrchestrationRecipe from './recipes/AIModelOrchestrationRecipe';
-import GenAIRecipeGenerationRecipe from './recipes/GenAIRecipeGenerationRecipe';
+import AITechRecipe from './recipes/AITechRecipe';
+import AIModelOrchRecipe from './recipes/AIModelOrchRecipe';
+import GenAIRecipeGen from './recipes/GenAIRecipeGen';
 
 const Cookbook = () => {
   console.log("Rendering Cookbook component");
@@ -46,7 +46,7 @@ const Cookbook = () => {
       description: 'Understanding the machine learning and computer science techniques used throughout Tolerable',
       difficulty: 'Advanced',
       prepTime: '30 minutes',
-      component: AITechniquesRecipe
+      component: AITechRecipe
     },
     {
       id: 'advanced-code-editor',
@@ -86,7 +86,7 @@ const Cookbook = () => {
       description: 'Implementing GitHub analysis, speech recognition, and screen recording features',
       difficulty: 'Advanced',
       prepTime: '30 minutes',
-      component: AdvancedFeaturesRecipe
+      component: AdvFeaturesRecipe
     },
     {
       id: 'education-suggestions-toggle',
@@ -102,7 +102,7 @@ const Cookbook = () => {
       description: 'Implementing web and academic paper search for enhanced educational responses',
       difficulty: 'Advanced',
       prepTime: '20 minutes',
-      component: EducationSearchRecipe
+      component: EduSearchRecipe
     },
     {
       id: 'modern-web-stack',

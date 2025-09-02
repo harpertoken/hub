@@ -18,8 +18,8 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import LoadingAnimation from './LoadingAnimation';
-import EducationResponseModal from './EducationResponseModal';
+import LoadingAnim from '../components/LoadingAnim';
+import EduResponseModal from '../components/EduResponseModal';
 import {
   RefreshCw,  // Reset icon
   ArrowUp,    // Scroll to top icon
@@ -1262,7 +1262,7 @@ If the problem persists, the server might be down or experiencing issues.
               >
 
                 {loading ? (
-                  <LoadingAnimation />
+                  <LoadingAnim />
                 ) : (
                   <ArrowUp className="w-4 h-4" />
                 )}
@@ -1649,7 +1649,7 @@ If the problem persists, the server might be down or experiencing issues.
 
           {/* Response container */}
           {(response || error || loading) && showResponseModal && (
-            <EducationResponseModal
+            <EduResponseModal
               response={response}
               error={error}
               loading={loading}
