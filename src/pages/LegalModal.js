@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { X } from 'lucide-react';
-import PrivacyPolicy from '../PrivacyPolicy';
-import TermsOfService from '../TermsOfService';
+import PrivacyPolicy from './PrivacyPolicy';
+import TermsOfService from './TermsOfService';
 import CompanyLegal from './CompanyLegal';
-import AIUsagePolicy from '../AIUsagePolicy';
+import AIUsagePolicy from './AIUsagePolicy';
 import useScrollLock from '../hooks/useScrollLock';
 
 const LegalModal = ({ isOpen, onClose, type }) => {
