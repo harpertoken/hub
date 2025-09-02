@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Play, Pause, Volume2, Volume1, VolumeX, Minimize, Maximize } from 'lucide-react';
-import { useAudio } from '../contexts/AudioContext';
+import { useAudio } from '../../contexts/AudioContext';
 
 const PersistentAudioPlayer = () => {
   const {
