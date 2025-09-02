@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { X } from 'lucide-react';
-import useScrollLock from '../hooks/useScrollLock';
+import useScrollLock from '../../hooks/useScrollLock';
 
 /**
  * DeleteConfirmationModal component

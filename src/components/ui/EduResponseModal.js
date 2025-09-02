@@ -8,7 +8,7 @@ import rehypeRaw from 'rehype-raw';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'katex/dist/katex.min.css';
-import useScrollLock from '../hooks/useScrollLock';
+import useScrollLock from '../../hooks/useScrollLock';
 
 const EducationResponseModal = ({ isOpen, onClose, response }) => {
   const [linkPreview, setLinkPreview] = useState(null);
