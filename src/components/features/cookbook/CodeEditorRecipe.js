@@ -554,7 +554,7 @@ const createStackClass = () => {
               showLineNumbers={true}
             >
               {`// src/services/CodeCompletionService.js
-import { API_URL } from '../config';
+import { API_URL } from '../../../lib/config';
 
 /**
  * Get code completion suggestions from Gemini API

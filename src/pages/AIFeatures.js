@@ -34,10 +34,10 @@ import remarkMath from 'remark-math';       // Math notation support
 import rehypeKatex from 'rehype-katex';     // KaTeX rendering for math
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';  // Code highlighting
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';  // Light theme for code
-import '../markdown-styles.css';  // Custom markdown styles
-import '../latex-styles.css';     // Custom LaTeX styles
+import '../styles/markdown-styles.css';  // Custom markdown styles
+import '../styles/latex-styles.css';     // Custom LaTeX styles
 import 'katex/dist/katex.min.css';  // KaTeX styles
-import { API_URL } from '../config';  // API endpoint configuration
+import { API_URL } from '../lib/config';  // API endpoint configuration
 import useScrollLock from '../hooks/useScrollLock';  // Custom hook for locking body scroll
 import { useModal } from '../contexts/ModalContext';  // Modal context for header visibility
 

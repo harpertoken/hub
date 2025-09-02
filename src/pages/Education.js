@@ -45,7 +45,7 @@ import { vs } from 'react-syntax-highlighter/dist/esm/styles/prism';    // Light
 import 'katex/dist/katex.min.css';                // KaTeX styles
 
 // Import API_URL from config to ensure consistent usage
-import { API_URL } from '../config';
+import { API_URL } from '../lib/config';
 import LogoComponent from './LogoComponent';
 
 /**

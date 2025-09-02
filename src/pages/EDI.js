@@ -15,10 +15,10 @@ import rehypeKatex from 'rehype-katex';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'katex/dist/katex.min.css';
-import '../relaxing-content.css';
+import '../styles/relaxing-content.css';
 
 // Import API_URL from config to ensure consistent usage
-import { API_URL } from '../config';
+import { API_URL } from '../lib/config';
 
 const EDI = () => {
   const [code, setCode] = useState('// Write your code here\n\n');

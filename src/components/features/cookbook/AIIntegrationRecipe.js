@@ -222,7 +222,7 @@ app.post('/process-image', upload.single('image'), async (req, res) => {
             >
               {`// src/components/AIFeatures.js
 import React, { useState, useRef } from 'react';
-import { API_URL } from '../config';
+import { API_URL } from '../../../lib/config';
 
 const AIFeatures = () => {
   const [activeTab, setActiveTab] = useState('image');
