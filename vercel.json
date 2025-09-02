@@ -15,7 +15,7 @@
       "src": "api/index.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": ["consolidated-server.js", "improved-arxiv-search-regex.js"]
+        "includeFiles": ["consolidated-server.js"]
       }
     }
   ],
