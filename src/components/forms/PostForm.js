@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Send, X, Image, Upload, AlertCircle, Music, Video, MessageSquare } from 'lucide-react';
 // Firebase auth import removed as it's no longer used
-import { createPost, updatePost } from '../services/postService';
+import { createPost, updatePost } from '../../services/postService';
 
 const PostForm = ({ currentPost, onCancel, onSave }) => {
   const [title, setTitle] = useState('');
