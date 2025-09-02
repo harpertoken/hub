@@ -3,8 +3,8 @@ import { Mic, RefreshCw, Settings, X } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
-import '../markdown-styles.css';
-import '../latex-styles.css';
+import '../styles/markdown-styles.css';
+import '../styles/latex-styles.css';
 import 'katex/dist/katex.min.css';
 
 const VoiceSearch = () => {

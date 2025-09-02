@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { marked } from 'marked';
 import DOMPurify from 'dompurify';
-import '../markdown-styles.css';
+import '../styles/markdown-styles.css';
 import LogoComponent from './LogoComponent';
 
 // Configure marked to allow HTML
