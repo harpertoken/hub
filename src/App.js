@@ -1,40 +1,40 @@
 import { useState, useEffect, useRef } from 'react';
-import FirstVisitModal from './components/FirstVisitModal';
+import FirstVisitModal from './pages/FirstVisitModal';
 import { Menu, Plus, AlertTriangle, Zap, X } from 'lucide-react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { fetchPosts, deletePost, initializePostsSystem, updatePostOrder } from './services/postService';
 import { Toaster, toast } from 'react-hot-toast';
 import './theme.css';
 import './animations.css';
-import Settings from './components/Settings';
+import Settings from './pages/Settings';
 import Footer from './Footer';
-import AuthRemovedBanner from './components/AuthRemovedBanner';
+import AuthRemovedBanner from './pages/AuthRemovedBanner';
 // import ParticlesBackground from './components/ParticlesBackground'; // Removed as requested
 import LoadingAnimation from './components/LoadingAnimation';
 // Removed FloatingActionButton and NewPostButton imports
 // Voice Assistant removed as requested
 
 // Import components
-import MobileMenu from './components/MobileMenu';
-import PostForm from './components/PostForm';
-import PostList from './components/PostList';
-import PostPreviewModal from './components/PostPreviewModal';
-import AILab from './components/AILab';
+import MobileMenu from './pages/MobileMenu';
+import PostForm from './pages/PostForm';
+import PostList from './pages/PostList';
+import PostPreviewModal from './pages/PostPreviewModal';
+import AILab from './pages/AILab';
 import PrivacyPolicy from './PrivacyPolicy';
 import TermsOfService from './TermsOfService';
-import CompanyLegal from './components/CompanyLegal';
+import CompanyLegal from './pages/CompanyLegal';
 import AIUsagePolicy from './AIUsagePolicy';
-import About from './components/About';
-import ConsolidatedChangelog from './components/ConsolidatedChangelog';
-import Education from './components/Education';
-import Cookbook from './components/Cookbook';
+import About from './pages/About';
+import ConsolidatedChangelog from './pages/ConsolidatedChangelog';
+import Education from './pages/Education';
+import Cookbook from './pages/Cookbook';
 import CookbookSimple from './components/CookbookSimple';
 
 
-import EDI from './components/EDI';
-import Diagnostics from './components/Diagnostics';
-import AIServiceBanner from './components/AIServiceBanner';
-import LogoComponent from './components/LogoComponent';
+import EDI from './pages/EDI';
+import Diagnostics from './pages/Diagnostics';
+import AIServiceBanner from './pages/AIServiceBanner';
+import LogoComponent from './pages/LogoComponent';
 
 // Import Contexts
 import { LegalProvider } from './contexts/LegalContext';

@@ -1,5 +1,5 @@
 import React from 'react';
-import LogoComponent from './components/LogoComponent';
+import LogoComponent from './pages/LogoComponent';
 
 const TermsOfService = () => {
   return (

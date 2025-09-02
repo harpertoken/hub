@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import LegalModal from '../components/LegalModal';
+import LegalModal from '../pages/LegalModal';
 
 // Create context
 const LegalContext = createContext();
