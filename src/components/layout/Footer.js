@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import { X } from 'lucide-react';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { vs } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import useScrollLock from './hooks/useScrollLock';
-import ThemeToggle from './pages/ThemeToggle';
+import useScrollLock from '../../hooks/useScrollLock';
+import ThemeToggle from '../../pages/ThemeToggle';
 const Footer = () => {
   const [modalOpen, setModalOpen] = useState(false);
 
