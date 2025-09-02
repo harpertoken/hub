@@ -1,6 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
 import PropTypes from 'prop-types';
-import ExtLinkModal from '../components/ExtLinkModal';
+import ExtLinkModal from '../components/ui/ExtLinkModal';
 
 // Create context
 const ExternalLinkContext = createContext();

@@ -4,31 +4,30 @@ import { Menu, Plus, AlertTriangle, Zap, X } from 'lucide-react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { fetchPosts, deletePost, initializePostsSystem, updatePostOrder } from './services/postService';
 import { Toaster, toast } from 'react-hot-toast';
-import './theme.css';
-import './animations.css';
+import './styles/theme.css';
+import './styles/animations.css';
 import Settings from './pages/Settings';
-import Footer from './Footer';
+import Footer from './components/layout/Footer';
 import AuthRemovedBanner from './pages/AuthRemovedBanner';
-// import ParticlesBackground from './components/ParticlesBackground'; // Removed as requested
-import LoadingAnim from './components/LoadingAnim';
+import LoadingAnim from './components/ui/LoadingAnim';
 // Removed FloatingActionButton and NewPostButton imports
 // Voice Assistant removed as requested
 
 // Import components
 import MobileMenu from './pages/MobileMenu';
-import PostForm from './pages/PostForm';
+import PostForm from './components/forms/PostForm';
 import PostList from './pages/PostList';
 import PostPreviewModal from './pages/PostPreviewModal';
 import AILab from './pages/AILab';
-import PrivacyPolicy from './PrivacyPolicy';
-import TermsOfService from './TermsOfService';
+import PrivacyPolicy from './pages/PrivacyPolicy';
+import TermsOfService from './pages/TermsOfService';
 import CompanyLegal from './pages/CompanyLegal';
-import AIUsagePolicy from './AIUsagePolicy';
+import AIUsagePolicy from './pages/AIUsagePolicy';
 import About from './pages/About';
 import Changelog from './pages/Changelog';
 import Education from './pages/Education';
 import Cookbook from './pages/Cookbook';
-import CookbookSimple from './components/CookbookSimple';
+import CookbookSimple from './components/features/CookbookSimple';
 
 
 import EDI from './pages/EDI';
@@ -41,7 +40,7 @@ import { LegalProvider } from './contexts/LegalContext';
 import { AudioProvider } from './contexts/AudioContext';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { ModalProvider, useModal } from './contexts/ModalContext';
-import PersistentAudioPlayer from './components/PersistentAudioPlayer';
+import PersistentAudioPlayer from './components/features/PersistentAudioPlayer';
 
 const MainContent = () => {
   const [posts, setPosts] = useState([]);

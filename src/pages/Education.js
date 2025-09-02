@@ -18,8 +18,8 @@
  */
 
 import React, { useState, useRef, useEffect } from 'react';
-import LoadingAnim from '../components/LoadingAnim';
-import EduResponseModal from '../components/EduResponseModal';
+import LoadingAnim from '../components/ui/LoadingAnim';
+import EduResponseModal from '../components/ui/EduResponseModal';
 import {
   RefreshCw,  // Reset icon
   ArrowUp,    // Scroll to top icon

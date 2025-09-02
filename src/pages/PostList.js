@@ -1,9 +1,9 @@
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Edit2, Trash2, Eye, GripVertical, MessageSquare, Play } from 'lucide-react';
-import LoadingAnim from '../components/LoadingAnim';
+import LoadingAnim from '../components/ui/LoadingAnim';
 import { useAudio } from '../contexts/AudioContext';
-import DeleteConfirmModal from '../components/DeleteConfirmModal';
+import DeleteConfirmModal from '../components/ui/DeleteConfirmModal';
 
 
 /**
