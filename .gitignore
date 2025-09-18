@@ -19,6 +19,7 @@ out/
 .next/
 .cache/
 coverage/
+index.html
 
 # Environment files
 .env

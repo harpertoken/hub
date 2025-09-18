@@ -1,4 +1,3 @@
-
 /**
  * Settings Component
  *
@@ -14,10 +13,9 @@
  */
 
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 
 // Firebase imports removed as they are no longer used
-// Image upload service removed as it's no longer used
+// Image upload service removed as they are no longer used
 
 
 /**
@@ -60,7 +58,6 @@ const Settings = () => {
     // Initialize with default settings
     const defaultSettings = {
       profileImage: '/assets/logo.svg',
-      theme: 'light',
       notifications: true
     };
 
@@ -174,11 +171,11 @@ const Settings = () => {
         {/*
           Header Section
            Displays the logo and page title
-          Matches the style of the Education component for consistency
+           Matches the style of the Education component for consistency
         */}
         <div className="text-center mb-12">
           Settings
-           <p className="text-sm" style={{color: '#666666'}}>Customize your experience</p>
+          <p className="text-sm" style={{color: '#666666'}}>Customize your experience</p>
         </div>
 
         {/*
@@ -222,7 +219,7 @@ const Settings = () => {
 
                 {/* Notice about profile picture functionality */}
                 <div className="p-3 text-sm rounded-sm mb-4" style={{
-                  border: '1px solid #e5e5e5',
+                  border: '1px solid #e5e7eb',
                   backgroundColor: '#f0f0f0',
                   color: '#666666'
                 }}>
@@ -242,7 +239,7 @@ const Settings = () => {
                         src={settings.profileImage}
                         alt="Profile"
                         className="w-20 h-20 object-cover rounded-sm"
-                        style={{border: '1px solid #e5e5e5'}}
+                        style={{border: '1px solid #e5e7eb'}}
                       />
                     </div>
                   )}
@@ -263,7 +260,7 @@ const Settings = () => {
                       style={{
                         color: '#666666',
                         backgroundColor: '#f9f9f9',
-                        border: '1px solid #e5e5e5'
+                        border: '1px solid #e5e7eb'
                       }}
                     />
                     <p className="mt-2 text-xs" style={{color: '#666666'}}>
@@ -273,7 +270,7 @@ const Settings = () => {
                     {/* Upload progress indicator - only shown during active uploads */}
                     {uploadProgress > 0 && uploadProgress < 100 && (
                       <div className="mt-2">
-                        <div className="w-full h-1 rounded-sm overflow-hidden" style={{backgroundColor: '#e5e5e5'}}>
+                        <div className="w-full h-1 rounded-sm overflow-hidden" style={{backgroundColor: '#e5e7e5'}}>
                           <div
                             className="h-1 transition-all duration-300 ease-in-out"
                             style={{
@@ -297,7 +294,7 @@ const Settings = () => {
                   className="px-4 py-2 text-xs cursor-not-allowed opacity-50"
                   style={{
                     color: '#666666',
-                    border: '1px solid #e5e5e5',
+                    border: '1px solid #e5e7eb',
                     backgroundColor: '#f9f9f9'
                   }}
                 >
@@ -309,18 +306,7 @@ const Settings = () => {
 
 
 
-          {/* Navigation link to return to home page */}
-          <div className="flex justify-center mt-8">
-            <Link
-              to="/"
-              className="px-3 py-1.5 text-xs transition-colors duration-200"
-              style={{color: '#666666'}}
-              onMouseEnter={(e) => e.target.style.color = '#000000'}
-              onMouseLeave={(e) => e.target.style.color = '#666666'}
-            >
-              ← Back to Home
-            </Link>
-          </div>
+
         </div>
       </div>
     </div>

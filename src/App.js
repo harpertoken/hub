@@ -4,7 +4,6 @@ import { Menu, Plus, AlertTriangle, Zap, X } from 'lucide-react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { fetchPosts, deletePost, initializePostsSystem, updatePostOrder } from './services/postService';
 import { Toaster, toast } from 'react-hot-toast';
-import './styles/theme.css';
 import Settings from './pages/Settings';
 import Footer from './components/layout/Footer';
 
@@ -382,17 +381,6 @@ const App = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Remove old theme classes that might be set
-    document.documentElement.classList.remove('dark', 'dim', 'gold', 'blue');
-
-    // Add meta tag for theme-color if it doesn't exist
-    if (!document.querySelector('meta[name="theme-color"]')) {
-      const meta = document.createElement('meta');
-      meta.name = 'theme-color';
-      meta.content = '#ffffff';
-      document.head.appendChild(meta);
-    }
-
     const visited = localStorage.getItem('hasVisited');
     if (!visited) {
       setIsFirstVisit(true);

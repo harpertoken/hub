@@ -1,5 +1,5 @@
 {
-  "name": "harper",
+  "name": "hub",
   "version": "0.0.1",
   "private": true,
   "dependencies": {
@@ -49,8 +49,8 @@
     "lint": "eslint src --ext .js,.jsx",
     "check": "npm run lint && npm run build && npm run test -- --watchAll=false --passWithNoTests --coverage",
     "eject": "react-scripts eject",
-    "server": "node consolidatedServer.js",
-    "dev-server": "nodemon consolidatedServer.js",
+    "server": "node src/server/index.js",
+    "dev-server": "nodemon src/server/index.js",
     "kill-server": "node kill-server.js",
     "dev": "concurrently \"npm start\" \"npm run dev-server\"",
     "dev-with-env": "cross-env REACT_APP_GEMINI_API_KEY=your_key concurrently \"npm start\" \"npm run dev-server\"",

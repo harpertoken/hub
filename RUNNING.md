@@ -1,4 +1,4 @@
-# Running Harper
+# Running hub
 
 ## Development Setup
 
@@ -49,7 +49,7 @@ If running in background, kill the processes:
 pkill -f "react-scripts start"
 
 # Kill backend server
-pkill -f "node consolidatedServer.js"
+pkill -f "node src/server/index.js"
 ```
 
 ### Check Running Processes

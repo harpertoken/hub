@@ -1163,7 +1163,7 @@ If the problem persists, the server might be down or experiencing issues.
       }}>
         {/* Header */}
          <div className="text-center mb-12">
-           Harper
+           hub
          </div>
 
         {/* Search box */}

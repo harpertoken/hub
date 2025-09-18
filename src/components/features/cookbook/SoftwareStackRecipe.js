@@ -48,7 +48,7 @@ const SoftwareStackRecipe = () => {
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import './theme.css';
+
 import './animations.css';
 import App from './App';
 

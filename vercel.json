@@ -11,89 +11,86 @@
       }
     },
     {
-      "src": "api/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": ["consolidatedServer.js"]
-      }
+      "src": "src/server/index.js",
+      "use": "@vercel/node"
     }
   ],
   "routes": [
     {
       "src": "/api/education-query",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/education-query",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/api/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/test",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/test-gemini",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/process-video",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/process-video-url",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/process-audio",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/process-youtube",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/analyze-github-user",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/analyze-github-repo",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/edi-prompt",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/gemini-text",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/suggest-prompts",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/process-image",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/create-shareable-link",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/shared-video/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/shared-video-file/(.*)",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
     {
       "src": "/convert-video",
-      "dest": "/api/index.js"
+      "dest": "/src/server/index.js"
     },
 
     {

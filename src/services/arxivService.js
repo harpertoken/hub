@@ -1,10 +1,10 @@
-const axios = require('axios');
+import axios from 'axios';
 
 /**
  * Searches ArXiv for academic papers using their API
  * @param {string} query - The search query
  * @param {number} numResults - Number of results to return (default: 5)
- * @returns {Promise<Object>} - Object with results array and error (if any)
+ * @returns {Promise<{results: Array<Object>, error: string|null}>} - Object with results array and error (if any)
  */
 async function searchArxiv(query, numResults = 5) {
   try {
@@ -35,7 +35,7 @@ async function searchArxiv(query, numResults = 5) {
 
     // Process each entry
     const entries = [];
-    entryMatches.forEach((entryXml, index) => {
+    entryMatches.forEach((entryXml) => {
       try {
         // Extract title
         const titleMatch = entryXml.match(/<title>([\s\S]*?)<\/title>/);
@@ -65,13 +65,13 @@ async function searchArxiv(query, numResults = 5) {
         const published = publishedMatch ? publishedMatch[1].trim() : null;
 
         // Create a clean snippet from the summary
-        const snippet = summary.length > 200 ? summary.substring(0, 200) + '...' : summary;
+        const snippet = summary.length > 200 ? `${summary.substring(0, 200)}...` : summary;
 
         entries.push({
-          title: title,
-          link: link,
-          snippet: snippet,
-          authors: authors,
+          title,
+          link,
+          snippet,
+          authors,
           date: published,
           source: 'arxiv.org'
         });
@@ -92,4 +92,4 @@ async function searchArxiv(query, numResults = 5) {
   }
 }
 
-module.exports = searchArxiv;
+export default searchArxiv;

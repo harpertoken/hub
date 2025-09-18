@@ -9,7 +9,7 @@ const path = require('path');
 const { URL } = require('url');
 
 // Import the ArXiv search function
-const searchArxiv = require('./improved-arxiv-search-regex');
+const searchArxiv = require('../services/arxivService');
 
 // We'll initialize the client lazily when needed, to avoid crashing the server at startup
 // const ytdl = require('ytdl-core'); // Commented out as it's not installed
@@ -20,7 +20,7 @@ const PORT = process.env.PORT || 3030; // Fixed port for local development
 
 // Ensure uploads directory exists (only in development)
 if (process.env.NODE_ENV !== 'production') {
-  const uploadsDir = path.join(__dirname, 'uploads');
+  const uploadsDir = path.join(__dirname, '..', '..', 'uploads');
   if (!fs.existsSync(uploadsDir)) {
     console.log('Creating uploads directory');
     fs.mkdirSync(uploadsDir, { recursive: true });
@@ -390,7 +390,7 @@ app.post('/process-youtube', express.json(), async (req, res) => {
         try {
           console.log('Attempting to get video thumbnail...');
           // Create a temporary file path for the thumbnail
-          const tempThumbnailPath = path.join(__dirname, 'uploads', `thumbnail-${videoId}.jpg`);
+          const tempThumbnailPath = path.join(__dirname, '..', '..', 'uploads', `thumbnail-${videoId}.jpg`);
 
           // Use axios to download the thumbnail
           const thumbnailResponse = await axios({
@@ -916,7 +916,7 @@ app.post('/create-shareable-link', upload.single('video'), async (req, res) => {
 
     // Create a permanent path for the video
     const videoFilename = `shared-${videoId}.mp4`;
-    const videoPath = path.join(__dirname, 'uploads', videoFilename);
+    const videoPath = path.join(__dirname, '..', '..', 'uploads', videoFilename);
 
     // Convert to MP4 for better compatibility
     const { spawn } = require('child_process');
@@ -971,7 +971,7 @@ app.get('/shared-video/:videoId', (req, res) => {
 
   try {
     const videoId = req.params.videoId;
-    const videoPath = path.join(__dirname, 'uploads', `shared-${videoId}.mp4`);
+    const videoPath = path.join(__dirname, '..', '..', 'uploads', `shared-${videoId}.mp4`);
 
     // Check if the video exists
     if (!fs.existsSync(videoPath)) {
@@ -1109,7 +1109,7 @@ app.get('/shared-video-file/:videoId', (req, res) => {
 
   try {
     const videoId = req.params.videoId;
-    const videoPath = path.join(__dirname, 'uploads', `shared-${videoId}.mp4`);
+    const videoPath = path.join(__dirname, '..', '..', 'uploads', `shared-${videoId}.mp4`);
 
     // Check if the video exists
     if (!fs.existsSync(videoPath)) {
@@ -1178,7 +1178,7 @@ app.post('/convert-video', upload.single('video'), async (req, res) => {
 
     // Create a unique filename for the output
     const outputFilename = `converted-${Date.now()}.${format}`;
-    const outputPath = path.join(__dirname, 'uploads', outputFilename);
+    const outputPath = path.join(__dirname, '..', '..', 'uploads', outputFilename);
 
     // Use ffmpeg to convert the video
     const { spawn } = require('child_process');
@@ -1516,7 +1516,7 @@ app.post('/api/gemini', express.json(), async (req, res) => {
 
 // Catch-all route to serve the React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
 });
 
 // Export the Express app for Vercel
