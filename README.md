@@ -2,6 +2,8 @@
 
 Harper is a versatile web application that brings together content creation, AI-powered tools, and educational resources in one seamless platform. Whether you're crafting posts, exploring AI capabilities, or diving into learning materials, Harper provides an intuitive and powerful experience.
 
+<!-- Help needed -->
+
 ## Features
 
 At its core, Harper offers robust post management with the ability to create, edit, and organize content effortlessly. The integrated AI Lab lets you analyze media, generate content, and leverage advanced AI models for creative and analytical tasks. For learning enthusiasts, the platform includes comprehensive educational resources and a detailed cookbook filled with practical guides and recipes across various domains. Diagnostic tools help monitor system performance, while persistent audio playback ensures uninterrupted listening experiences. The app is built with modern web technologies, featuring a responsive design that works beautifully on all devices. Real-time updates, rich media support, and accessibility-focused components make it both powerful and user-friendly.
