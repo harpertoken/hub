@@ -1,0 +1,365 @@
+/* Markdown Content Styles - Theme-aware for dark/light mode compatibility */
+.markdown-content {
+  font-family: var(--font-primary, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  line-height: 1.6;
+  font-weight: 400;
+  max-width: 100%;
+  letter-spacing: 0.01em;
+  color: var(--text-primary);
+  font-size: 0.875rem;
+}
+
+.markdown-content h1,
+.markdown-content h2,
+.markdown-content h3,
+.markdown-content h4,
+.markdown-content h5,
+.markdown-content h6 {
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.3;
+}
+
+.markdown-content h1 {
+  font-size: 1.25rem;
+  letter-spacing: 0;
+}
+
+.markdown-content h2 {
+  font-size: 1.125rem;
+  letter-spacing: 0;
+}
+
+.markdown-content h3 {
+  font-size: 1rem;
+  letter-spacing: 0;
+}
+
+.markdown-content p {
+  margin-bottom: 1em;
+  color: var(--text-secondary);
+}
+
+.markdown-content ul,
+.markdown-content ol {
+  margin-bottom: 1em;
+  padding-left: 1.25em;
+  color: var(--text-secondary);
+}
+
+.markdown-content ul {
+  list-style-type: disc;
+}
+
+.markdown-content ul li {
+  position: relative;
+}
+
+.markdown-content ol {
+  list-style-type: decimal;
+}
+
+.markdown-content li {
+  margin-bottom: 0.5em;
+  line-height: 1.6;
+}
+
+.markdown-content a {
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.markdown-content a:hover {
+  color: var(--text-secondary);
+}
+
+.markdown-content blockquote {
+  border-left: 1px solid var(--border-color);
+  padding-left: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  color: var(--text-secondary);
+}
+
+.markdown-content code {
+  font-family: var(--font-mono, 'Courier New', Courier, monospace);
+  background-color: var(--bg-secondary);
+  padding: 0.15em 0.3em;
+  border-radius: 0;
+  font-size: 0.75em;
+  letter-spacing: 0;
+  color: var(--text-primary);
+}
+
+.markdown-content pre {
+  background-color: var(--bg-secondary);
+  padding: 0.75em;
+  overflow-x: auto;
+  margin-bottom: 1em;
+  border-radius: 0;
+  border-left: 1px solid var(--border-color);
+}
+
+.markdown-content pre code {
+  background-color: transparent;
+  padding: 0;
+  font-size: 0.75em;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.markdown-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5em 0;
+  font-size: 0.75em;
+}
+
+.markdown-content th,
+.markdown-content td {
+  border-bottom: 1px solid var(--border-color);
+  padding: 0.5em 0.25em;
+  text-align: left;
+  color: var(--text-secondary);
+}
+
+.markdown-content th {
+  font-weight: 400;
+  letter-spacing: 0;
+  font-size: 0.75em;
+  color: var(--text-primary);
+}
+
+.markdown-content img {
+  max-width: 100%;
+  height: auto;
+  margin: 1em 0;
+  border-radius: 0;
+}
+
+
+
+/* Minimalist styling for changelog - Theme-aware */
+.changelog-content h2 {
+  letter-spacing: 0;
+  font-size: 1.125rem;
+  margin-top: 2em;
+  color: var(--text-primary);
+}
+
+.changelog-content h3 {
+  letter-spacing: 0;
+  font-size: 0.875rem;
+  margin-top: 1.5em;
+  color: var(--text-primary);
+}
+
+.changelog-content ul {
+  padding-left: 1rem;
+  list-style-type: disc;
+}
+
+.changelog-content li {
+  position: relative;
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+}
+
+/* Adjust spacing */
+.changelog-content p,
+.changelog-content ul,
+.changelog-content li {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Education UI Styling for Changelog - Theme-aware */
+/* Main heading styles */
+.prose h1 {
+  font-size: 1.5rem;
+  font-weight: normal;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+  text-align: center;
+}
+
+/* Section heading styles */
+.prose h2 {
+  font-size: 1.125rem;
+  font-weight: normal;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+/* Subsection heading styles */
+.prose h3 {
+  font-size: 1rem;
+  font-weight: normal;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.prose .ethics-section,
+.prose .security-section {
+  margin: 2rem 0;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.prose .ethics-intro,
+.prose .security-intro {
+  color: var(--text-secondary);
+  margin-bottom: 1.5rem;
+}
+
+/* Paragraph styles */
+.prose p {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.prose .ethics-principles {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  color: var(--text-secondary);
+}
+
+.prose .ethics-principles li {
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+/* General list styles */
+.prose ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.prose li {
+  color: var(--text-secondary);
+  font-size: 0.875rem;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+.prose .milestone-highlight {
+  margin-top: 1.5rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.prose .milestone-highlight p {
+  color: var(--text-secondary);
+}
+
+.prose .document-control {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.prose .control-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.prose .control-item .label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.prose .control-item .value {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.prose .version-history {
+  margin: 2rem 0;
+  border: 1px solid var(--border-color);
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.prose .version-entry {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.prose .version-entry:last-child {
+  border-bottom: none;
+}
+
+.prose .version-title {
+  font-size: 1rem;
+  font-weight: 400;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.prose .version-date {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.prose .change-list {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 0;
+}
+
+.prose .change-list li {
+  color: var(--text-secondary);
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.prose .footer {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.prose .footer-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.prose .footer-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.prose .footer-value {
+  font-size: 0.875rem;
+  color: var(--text-primary);
+}
+
+.prose .status-active {
+  color: var(--success-color, #10b981);
+}
+
+.prose .status-deprecated {
+  color: var(--warning-color, #f59e0b);
+}
+
+.prose .status-removed {
+  color: var(--error-color, #ef4444);
+}
+
