@@ -1,0 +1,9 @@
+# Code owners for Harper repository
+# This file defines who owns different parts of the codebase
+
+# Global owners - all files
+* @harpertoken
+
+# Specific ownership can be added here as needed
+# /src/components/ @harpertoken
+# /api/ @harpertoken

@@ -325,7 +325,7 @@ function initializeService() {
 }
 
 // Call initialize immediately
-const initialized = initializeService();
+initializeService();
 
 // Export the service
 export default {

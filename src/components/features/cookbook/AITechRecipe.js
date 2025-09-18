@@ -249,7 +249,7 @@ const response = result.response.text();`}
 {`// Agent framework for autonomous task execution
 class AIAgent {
   constructor(config) {
-    this.name = config.name || 'Tolerable Agent';
+    this.name = config.name || 'mood Agent';
     this.capabilities = config.capabilities || [];
     this.model = genAI.getGenerativeModel({
       model: config.modelName || "gemini-1.5-flash"

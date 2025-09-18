@@ -3,8 +3,6 @@ import {
   Play,
   Save,
   Upload,
-  Copy,
-  Trash2,
   RefreshCw,
   Zap
 } from 'lucide-react';
@@ -23,7 +21,7 @@ import { API_URL } from '../lib/config';
 const EDI = () => {
   const [code, setCode] = useState('// Write your code here\n\n');
   const [language, setLanguage] = useState('javascript');
-  const [theme, setTheme] = useState('vs');
+  const theme = 'vs';
   const [prompt, setPrompt] = useState('');
   const [response, setResponse] = useState('');
   const [loading, setLoading] = useState(false);
@@ -50,7 +48,7 @@ const EDI = () => {
   ];
 
   // Handle editor mount
-  const handleEditorDidMount = (editor, monaco) => {
+  const handleEditorDidMount = (editor, monaco) => { // eslint-disable-line no-unused-vars
     editorRef.current = editor;
   };
 
@@ -67,10 +65,7 @@ const EDI = () => {
     }
   };
 
-  // Handle theme change
-  const handleThemeChange = (e) => {
-    setTheme(e.target.value);
-  };
+
 
   // Handle code execution
   const executeCode = async () => {
@@ -309,20 +304,11 @@ const EDI = () => {
     reader.readAsText(file);
   };
 
-  // Clear editor
-  const clearEditor = () => {
-    if (window.confirm('Are you sure you want to clear the editor? All unsaved changes will be lost.')) {
-      setCode('// Write your code here\n\n');
-      setOutput('');
-      setResponse('');
-    }
-  };
+
 
   return (
     <div className="min-h-screen flex flex-col" style={{backgroundColor: '#ffffff'}}>
       <div className="max-w-6xl mx-auto px-4 w-full flex-grow flex flex-col">
-        EDI - Editor Development Interface
-
         {/* Toolbar */}
         <div className="flex flex-wrap gap-2 mb-4 items-center">
           <select
@@ -334,22 +320,6 @@ const EDI = () => {
               <option key={lang.id} value={lang.id}>{lang.label}</option>
             ))}
           </select>
-
-          <select
-            value={theme}
-            onChange={handleThemeChange}
-            className="px-3 py-1.5 text-xs text-gray-500 border border-gray-200 rounded"
-          >
-            <option value="vs">Light</option>
-            <option value="vs-dark">Dark</option>
-          </select>
-
-          <input
-            type="text"
-            value={fileName}
-            onChange={(e) => setFileName(e.target.value)}
-            className="px-3 py-1.5 text-xs text-gray-500 border border-gray-200 rounded"
-          />
 
           <div className="flex-grow"></div>
 
@@ -380,27 +350,6 @@ const EDI = () => {
               className="hidden"
             />
           </label>
-
-          <button
-            onClick={() => {
-              navigator.clipboard.writeText(code);
-              alert('Code copied to clipboard!');
-            }}
-            className="px-3 py-1.5 text-xs text-gray-500 hover:text-black transition-colors duration-200 flex items-center gap-1"
-            title="Copy code"
-          >
-            <Copy className="w-3 h-3" />
-            Copy
-          </button>
-
-          <button
-            onClick={clearEditor}
-            className="px-3 py-1.5 text-xs text-gray-500 hover:text-black transition-colors duration-200 flex items-center gap-1"
-            title="Clear editor"
-          >
-            <Trash2 className="w-3 h-3" />
-            Clear
-          </button>
         </div>
 
         {/* Main content area */}
@@ -408,7 +357,7 @@ const EDI = () => {
           {/* Code editor */}
           <div className="flex-1 border border-gray-100 rounded overflow-hidden">
             <Editor
-              height="100%"
+              height="70vh"
               language={language}
               value={code}
               theme={theme}

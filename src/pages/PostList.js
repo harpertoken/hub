@@ -44,7 +44,6 @@ const PostList = ({ posts, onEdit, onDelete, onPreview, onReorder, loading, onCr
         onClick={onCreatePost}
       >
         <p className="text-black text-lg font-normal mb-4">Create your first post</p>
-        <p className="text-gray-600 max-w-md mx-auto text-sm leading-relaxed">Express yourself through text, images, audio, or video. Your content is stored securely and can be accessed from anywhere.</p>
         <button
           className="mt-8 inline-block px-4 py-2 bg-black bg-opacity-5 hover:bg-opacity-10 rounded-full text-xs text-gray-500 transition-all duration-300"
           onClick={(e) => {

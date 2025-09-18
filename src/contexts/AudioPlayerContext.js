@@ -89,11 +89,7 @@ export const AudioPlayerProvider = ({ children }) => {
       setCurrentTime(0);
     };
 
-    // Handle metadata loaded event (to get duration)
-    const handleMetadataLoaded = () => {
-      const state = audioPlayerService.getPlayerState();
-      setDuration(state.duration);
-    };
+
 
     // Handle volume change event
     const handleVolumeChange = () => {

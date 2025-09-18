@@ -177,9 +177,6 @@ const Settings = () => {
           Matches the style of the Education component for consistency
         */}
         <div className="text-center mb-12">
-          <div className="flex justify-center mb-4">
-             Settings
-          </div>
           Settings
            <p className="text-sm" style={{color: '#666666'}}>Customize your experience</p>
         </div>
@@ -310,18 +307,7 @@ const Settings = () => {
             </form>
           </section>
 
-          {/*
-            Advanced Settings Section
-            Contains application settings and other advanced options
-          */}
-          <section className="space-y-6 mt-10">
-            Advanced Settings
-            <div className="p-4 rounded-sm shadow-sm" style={{backgroundColor: '#f9f9f9', border: '1px solid #e5e5e5'}}>
-              <p className="text-sm mb-4" style={{color: '#666666'}}>
-                Advanced settings will appear here in future updates.
-              </p>
-            </div>
-          </section>
+
 
           {/* Navigation link to return to home page */}
           <div className="flex justify-center mt-8">

@@ -5,7 +5,7 @@ import { oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 /**
  * AI Model Orchestration for Recipes component
  *
- * This component explains how Tolerable uses AI model orchestration to create and manage recipes
+  * This component explains how mood uses AI model orchestration to create and manage recipes
  */
 const GenAIRecipeGen = () => {
   return (

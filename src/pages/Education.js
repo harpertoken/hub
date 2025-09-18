@@ -1,7 +1,7 @@
 /**
- * Education Component
+ * Component
  *
- * This component provides an educational interface powered by Google's Gemini 1.5 Flash AI model.
+ * This component provides an interface powered by Google's Gemini 1.5 Flash AI model.
  * It allows users to ask questions, get AI-generated responses, and interact with content
  * through various features like voice search, screen recording, and more.
  *
@@ -409,7 +409,7 @@ If the problem persists, the server might be down or experiencing issues.
   const initializeSpeechRecognition = () => {
     // Check if the browser supports the Web Speech API
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
-      console.log('Speech recognition not supported in this browser');
+
       return;
     }
     // Recognition is initialized on demand in startVoiceSearch
@@ -1078,7 +1078,7 @@ If the problem persists, the server might be down or experiencing issues.
     // Special fix for audio continuity
     // This ensures any playing audio continues when navigating to the Education page
     if (window.resumeAudioPlayback) {
-      console.log('Education component mounted, checking audio playback');
+
       setTimeout(() => {
         window.resumeAudioPlayback();
       }, 500);
@@ -1162,12 +1162,9 @@ If the problem persists, the server might be down or experiencing issues.
         backgroundColor: '#ffffff'
       }}>
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="flex justify-center mb-4">
-             Education
-          </div>
-          Education
-        </div>
+         <div className="text-center mb-12">
+           Harper
+         </div>
 
         {/* Search box */}
         <div className="w-full mx-auto pb-16">{/* Added padding bottom */}
@@ -1178,7 +1175,7 @@ If the problem persists, the server might be down or experiencing issues.
                 value={prompt}
                 onChange={(e) => handleInputChange(e.target.value)}
                 placeholder="What would you like to learn about?"
-                className="w-full p-3 pr-16 text-base border-0 border-b focus:outline-none transition-colors"
+                className="w-3/4 p-3 pr-16 text-base border-0 border-b focus:outline-none transition-colors"
                 style={{
                   backgroundColor: '#f9f9f9',
                   color: '#000000',
@@ -1703,23 +1700,8 @@ If the problem persists, the server might be down or experiencing issues.
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
               </button>
             </div>
-            <p className="text-sm mb-4 leading-relaxed" style={{color: '#666666'}}>
-              It's more than information—it's impact. Education is a platform designed to help you explore and understand complex topics with clarity and purpose.
-            </p>
-            <p className="text-sm mb-4 leading-relaxed" style={{color: '#666666'}}>
-              We approach learning with humility and respect, recognizing that knowledge is a journey we take together. Our goal is to empower you with insights that are useful, sustainable, and meaningful.
-            </p>
-            <div className="flex justify-end">
-              <button
-                onClick={() => setShowInspirationalModal(false)}
-                className="transition-colors duration-200"
-                style={{color: '#666666'}}
-                onMouseEnter={(e) => e.target.style.color = '#000000'}
-                onMouseLeave={(e) => e.target.style.color = '#666666'}
-              >
-                Got it
-              </button>
-            </div>
+
+
           </div>
         </div>
       )}

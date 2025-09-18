@@ -40,7 +40,7 @@ const Cookbook = () => {
     {
       id: 'ai-techniques',
       title: 'AI Integration Techniques',
-      description: 'Understanding the machine learning and computer science techniques used throughout Tolerable',
+      description: 'Understanding the machine learning and computer science techniques used throughout mood',
       difficulty: 'Advanced',
       prepTime: '30 minutes',
       component: AITechRecipe
@@ -149,8 +149,8 @@ const Cookbook = () => {
       <div className="w-full px-4 md:px-8 lg:px-16 xl:px-24 py-16 relative">
         {/* Simple header */}
         <div className="text-center mb-12">
-          Tolerable Cookbook
-          <p className="text-sm" style={{color: '#666666'}}>Recipes for AI-powered features</p>
+           Cookbook
+
         </div>
 
         <div className="w-full max-w-3xl mx-auto">
@@ -165,10 +165,8 @@ const Cookbook = () => {
                 <div className="flex justify-between items-center">
                   <div>
                     {recipe.title}
-                    <p className="text-sm text-gray-600 mb-3">{recipe.description}</p>
                   </div>
                   <div className="flex items-center text-xs text-gray-500">
-                    <span className="mr-3">Prep time: {recipe.prepTime}</span><span>Difficulty: {recipe.difficulty}</span>
                     <ChevronRight className="w-4 h-4 ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                   </div>
                 </div>

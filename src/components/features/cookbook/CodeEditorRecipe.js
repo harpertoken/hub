@@ -622,8 +622,7 @@ export const getCodeCompletions = async (code, language, position) => {
 //     let completions = [];
 //     try {
 //       // Extract JSON from response
-// eslint-disable-next-line no-useless-escape
-//       const jsonMatch = completionText.match(/\[[^\]]*\]/);
+//       const jsonMatch = completionText.match(/\[.*\]/); // eslint-disable-line no-useless-escape
 //       if (jsonMatch) {
 //         completions = JSON.parse(jsonMatch[0]);
 //       }

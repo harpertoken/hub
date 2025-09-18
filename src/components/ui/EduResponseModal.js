@@ -77,42 +77,42 @@ const EducationResponseModal = ({ isOpen, onClose, response }) => {
             rehypePlugins={[rehypeKatex, rehypeRaw]}
             components={{
               // Enhanced heading styles with better contrast
-              h1: ({node, children, ...props}) => (
-                
+              h1: ({children}) => (
+                <h1 className="text-2xl font-bold my-4" style={{color: '#000000'}}>
                   {children}
-                
+                </h1>
               ),
-              h2: ({node, children, ...props}) => (
-                
+              h2: ({children}) => (
+                <h2 className="text-xl font-semibold my-3" style={{color: '#000000'}}>
                   {children}
-                
+                </h2>
               ),
-              h3: ({node, children, ...props}) => (
-                
+              h3: ({children}) => (
+                <h3 className="text-lg font-medium my-2" style={{color: '#000000'}}>
                   {children}
-                
+                </h3>
               ),
-              h4: ({node, children, ...props}) => (
-                
+              h4: ({children}) => (
+                <h4 className="text-base font-medium my-2" style={{color: '#000000'}}>
                   {children}
-                
+                </h4>
               ),
               // Enhanced paragraph styles
-              p: ({node, ...props}) => (
+              p: ({...props}) => (
                 <p className="my-3 text-base leading-relaxed" style={{color: '#000000'}} {...props} />
               ),
               // Enhanced list styles
-              ul: ({node, ...props}) => (
+              ul: ({...props}) => (
                 <ul className="list-disc pl-6 my-3 space-y-1" style={{color: '#000000'}} {...props} />
               ),
-              ol: ({node, ...props}) => (
+              ol: ({...props}) => (
                 <ol className="list-decimal pl-6 my-3 space-y-1" style={{color: '#000000'}} {...props} />
               ),
-              li: ({node, ...props}) => (
+              li: ({...props}) => (
                 <li className="text-base leading-relaxed" style={{color: '#000000'}} {...props} />
               ),
               // Enhanced code styles
-              code({node, inline, className, children, ...props}) {
+              code({inline, className, children, ...props}) {
                 const match = /language-(\w+)/.exec(className || '')
                 return !inline && match ? (
                   <SyntaxHighlighter
@@ -138,7 +138,7 @@ const EducationResponseModal = ({ isOpen, onClose, response }) => {
                 )
               },
               // Enhanced link styles
-              a({node, href, children, ...props}) {
+              a({href, children, ...props}) {
                 return (
                   <a
                     href={href}
@@ -153,7 +153,7 @@ const EducationResponseModal = ({ isOpen, onClose, response }) => {
                 );
               },
               // Enhanced blockquote styles
-              blockquote: ({node, ...props}) => (
+              blockquote: ({...props}) => (
                 <blockquote
                   className="border-l-4 pl-4 my-4 italic"
                   style={{
@@ -165,11 +165,11 @@ const EducationResponseModal = ({ isOpen, onClose, response }) => {
                 />
               ),
               // Enhanced strong/bold styles
-              strong: ({node, ...props}) => (
+              strong: ({...props}) => (
                 <strong className="font-semibold" style={{color: '#000000'}} {...props} />
               ),
               // Enhanced emphasis/italic styles
-              em: ({node, ...props}) => (
+              em: ({...props}) => (
                 <em className="italic" style={{color: '#000000'}} {...props} />
               )
             }}

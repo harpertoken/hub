@@ -95,22 +95,7 @@
       "src": "/convert-video",
       "dest": "/api/index.js"
     },
-    {
-      "src": "/api/process-image",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/api/process-audio",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/api/process-video",
-      "dest": "/api/index.js"
-    },
-    {
-      "src": "/api/process-youtube",
-      "dest": "/api/index.js"
-    },
+
     {
       "handle": "filesystem"
     },

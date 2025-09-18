@@ -155,7 +155,7 @@ const MainContent = () => {
       const refreshedPosts = await fetchPosts(true); // Force refresh
       setPosts(refreshedPosts);
     } catch (error) {
-      console.error('Error refreshing posts:', error);
+
       toast.error('Error refreshing posts');
     }
 
@@ -172,7 +172,7 @@ const MainContent = () => {
       setPosts(posts.filter(post => post.id !== postId));
       toast.success('Post deleted successfully!');
     } catch (error) {
-      console.error('Error deleting post:', error);
+
       setError('Failed to delete post.');
       toast.error('Failed to delete post');
     }
@@ -203,18 +203,18 @@ const MainContent = () => {
 
         toast.success('Post order updated');
       } catch (error) {
-        console.error('Error updating post order in backend:', error);
+
         // Keep the optimistic UI update but log the error
         toast.success('Post order updated locally');
       }
     } catch (error) {
-      console.error('Error reordering posts:', error);
+
       // Refresh posts to get the correct order
       try {
         const refreshedPosts = await fetchPosts(true);
         setPosts(refreshedPosts);
       } catch (refreshError) {
-        console.error('Error refreshing posts:', refreshError);
+
       }
       toast.error('Failed to reorder posts');
     }
@@ -237,7 +237,7 @@ const MainContent = () => {
         <div
           className="fixed top-0 z-50 w-full backdrop-blur-md transition-all duration-300 border-b"
           style={{
-            backgroundColor: scrollPosition > 20 ? '#ffffff' : '#ffffff',
+            backgroundColor: scrollPosition > 20 ? '#ffffff' : 'transparent',
             borderColor: '#e5e5e5',
             opacity: scrollPosition > 20 ? 0.95 : 0.98,
             boxShadow: scrollPosition > 50 ? '0 1px 3px rgba(0,0,0,0.03)' : 'none'
