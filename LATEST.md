@@ -13,7 +13,7 @@ npm run build              # Build only
 
 ## Configuration
 
-Jest config in `package.json` handles ES modules with:
+Jest configuration in `package.json` handles ES modules with:
 - `transformIgnorePatterns` for packages that need transformation
 - `moduleNameMapper` for mocked dependencies
 

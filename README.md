@@ -1,23 +1,21 @@
-# hub
+# Hub
 
-[![CI](https://github.com/harpertoken/hub/actions/workflows/ci.yml/badge.svg)](https://github.com/harpertoken/hub/actions/workflows/ci.yml)
+[![🧪 E2E Tests](https://github.com/harpertoken/hub/actions/workflows/e2e.yml/badge.svg)](https://github.com/harpertoken/hub/actions/workflows/e2e.yml)
 
-Content creation and learning platform.
+A platform for content creation and learning.
 
-<!-- Help needed -->
-
-### What it does
+### Features
 
 - Create and manage posts
 - AI Lab for content generation and media analysis
 - Educational resources and cookbook
-- Audio player that keeps going
-- Works on all devices
+- Persistent audio player
+- Responsive design for all devices
 - Real-time updates
 
-### Quick start
+### Quick Start
 
-Need Node.js 18+ and npm/pnpm.
+Requires Node.js 18+ and npm or pnpm.
 
 ```bash
 git clone https://github.com/harpertoken/hub.git
@@ -29,34 +27,32 @@ npm start
 npm run server  # in another terminal
 ```
 
-Done. Click "New" to make your first post.
+After setup, navigate to the application to create your first post.
 
-### Tech
+### Technology Stack
 
-- React 18 + hooks
+- React 18 with hooks
 - Express backend
-- Firebase + Google AI
+- Firebase and Google AI
 - Tailwind CSS
-- Vercel ready
+- Configured for Vercel deployment
 
-### Dev commands
+### Development Commands
 
 ```bash
-npm run dev    # start both frontend/backend
+npm run dev    # start both frontend and backend
 npm run build  # production build
 npm test       # run tests
 ```
 
-### Deploy
+### Deployment
 
-Ready for Vercel. Just push and deploy. Set your env vars in Vercel dashboard.
+Configured for deployment on Vercel. Push changes to the main branch for automatic deployment. Configure environment variables in the Vercel dashboard.
 
-### Contribute
+### Contributing
 
-Fork, make changes, test, PR. Keep it clean.
+To contribute, fork the repository, make changes, ensure tests pass, and submit a pull request. Maintain code quality.
 
 ### Security
 
-Don't commit API keys. Use HTTPS. Keep deps updated. Follow AI policy.
-
-#
+Do not commit API keys. Use HTTPS. Keep dependencies updated. Adhere to AI usage policy.

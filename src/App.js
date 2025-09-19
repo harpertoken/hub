@@ -336,6 +336,10 @@ const MainContent = () => {
         )}
 
         <main className="py-4 space-y-6" style={{backgroundColor: '#ffffff'}}>
+          <div className="text-center mb-8">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">Welcome to Hub</h1>
+            <p className="text-lg text-gray-600 mt-2">AI-Powered Content Platform</p>
+          </div>
           {/* Mobile create post button removed to avoid duplication */}
 
           {currentPost !== null && ( // Change condition to check for null specifically

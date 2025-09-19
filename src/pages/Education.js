@@ -1169,7 +1169,8 @@ If the problem persists, the server might be down or experiencing issues.
       }}>
         {/* Header */}
          <div className="text-center mb-12">
-           hub
+           <h1 className="text-4xl md:text-5xl font-bold mb-4" style={{color: '#111827'}}>Education</h1>
+           <p className="text-lg font-medium" style={{color: '#6b7280'}}>AI-Powered Learning Platform</p>
          </div>
 
         {/* Search box */}
@@ -1243,28 +1244,30 @@ If the problem persists, the server might be down or experiencing issues.
                    e.target.style.borderColor = 'transparent';
                    e.target.style.transform = 'translateY(0)';
                  }}
-                 aria-label="Search input"
-                 aria-expanded={showPromptSuggestions}
-                 aria-haspopup="listbox"
-                 role="combobox"
-                 aria-activedescendant={selectedSuggestionIndex >= 0 ? `suggestion-${selectedSuggestionIndex}` : undefined}
+                  aria-label="Search input"
+                  aria-expanded={showPromptSuggestions}
+                  aria-haspopup="listbox"
+                  role="combobox"
+                  aria-controls="prompt-suggestions"
+                  aria-activedescendant={selectedSuggestionIndex >= 0 ? `suggestion-${selectedSuggestionIndex}` : undefined}
                />
 
                {/* Enhanced Prompt Suggestions */}
                {showPromptSuggestions && promptSuggestions.length > 0 && (
-                 <div
-                   ref={suggestionsRef}
-                   className="absolute z-10 mt-2 w-full border-0 shadow-lg rounded-xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200"
-                   style={{
-                     backgroundColor: '#ffffff',
-                     backdropFilter: 'blur(12px)',
-                     WebkitBackdropFilter: 'blur(12px)',
-                     boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
-                     border: `1px solid #e5e5e5`,
-                     maxHeight: '280px'
-                   }}
-                   role="listbox"
-                   aria-label="Prompt suggestions"
+                  <div
+                    id="prompt-suggestions"
+                    ref={suggestionsRef}
+                    className="absolute z-10 mt-2 w-full border-0 shadow-lg rounded-xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200"
+                    style={{
+                      backgroundColor: '#ffffff',
+                      backdropFilter: 'blur(12px)',
+                      WebkitBackdropFilter: 'blur(12px)',
+                      boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+                      border: `1px solid #e5e5e5`,
+                      maxHeight: '280px'
+                    }}
+                    role="listbox"
+                    aria-label="Prompt suggestions"
                  >
                    <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                      {promptSuggestions.length === 1 && promptSuggestions[0].startsWith('Improving your prompt') ? (

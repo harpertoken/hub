@@ -1,88 +1,71 @@
-# Running hub
+# Running Hub
 
-## Development Setup
+## Quick Start
 
-### Prerequisites
-- Node.js 18+
-- npm or pnpm
-
-### Environment Variables
-Create a `.env` file in the root directory with:
-```
-REACT_APP_GEMINI_API_KEY=your_gemini_api_key
-GOOGLE_SEARCH_API_KEY=your_google_search_key (optional)
-GOOGLE_SEARCH_ENGINE_ID=your_search_engine_id (optional)
-```
-
-## Starting the Application
-
-### Frontend Only
 ```bash
-npm start
-```
-Starts React dev server on http://localhost:3000
-
-### Backend Only
-```bash
-npm run server
-```
-Starts Express server on port 3030
-
-### Both Frontend and Backend
-```bash
+git clone <repository-url>
+cd hub
+npm install
+cp .env.example .env   # Add your API keys
 npm run dev
 ```
-Runs both concurrently using concurrently
 
-## Stopping the Application
+Frontend: `http://localhost:3000` | Backend: `http://localhost:3030`
 
-### Development Server
-In the terminal running the server, press:
-```
-Ctrl+C
-```
+## Prerequisites
 
-### Background Processes
-If running in background, kill the processes:
-```bash
-# Kill React dev server
-pkill -f "react-scripts start"
+- Node.js 18+
+- npm or pnpm
+- Git
 
-# Kill backend server
-pkill -f "node src/server/index.js"
-```
+## Environment Setup
 
-### Check Running Processes
-```bash
-# See Node processes
-ps aux | grep node
-
-# Kill by PID
-kill <PID>
-```
-
-## Production Build
+Create `.env` file:
 
 ```bash
-npm run build
+REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
 ```
-Creates optimized build in `build/` directory
+
+## Development
+
+### Start Services
+- **Full stack**: `npm run dev` or `pnpm dev`
+- **Frontend only**: `npm start`
+- **Backend only**: `npm run server`
+
+### Testing
+- **Unit tests**: `npm test`
+- **E2E tests**: `npm run e2e`
+- **Quality check**: `npm run check`
 
 ## Deployment
 
-The app is configured for Vercel deployment. Push to main branch to trigger deployment.
+### Vercel (Recommended)
+1. Connect repository to Vercel
+2. Set environment variables
+3. Push to main branch for automatic deployment
+
+### Manual
+```bash
+npm run build
+npm run server
+```
 
 ## Troubleshooting
 
-- Port conflicts: Change PORT in .env
-- API errors: Check environment variables
-- Build fails: Clear node_modules and reinstall
+### Port conflicts
+```bash
+echo "PORT=3031" >> .env
+lsof -ti:3030 | xargs kill -9
+```
 
-## Scripts Available
+### Build issues
+```bash
+rm -rf node_modules package-lock.json
+npm install
+```
 
-- `npm start` - Start frontend dev server
-- `npm run build` - Create production build
-- `npm run server` - Start backend server
-- `npm run dev` - Start both frontend and backend
-- `npm test` - Run tests
-- `npm run lint` - Run ESLint
+### E2E test setup
+```bash
+npx playwright install
+```

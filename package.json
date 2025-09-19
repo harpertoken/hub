@@ -52,9 +52,18 @@
     "server": "node src/server/index.js",
     "dev-server": "nodemon src/server/index.js",
     "kill-server": "node kill-server.js",
-    "dev": "concurrently \"npm start\" \"npm run dev-server\"",
+    "dev": "concurrently --names \"client,server\" --prefix \"[{name}]\" \"npm start --silent\" \"npm run dev-server --silent\"",
     "dev-with-env": "cross-env REACT_APP_GEMINI_API_KEY=your_key concurrently \"npm start\" \"npm run dev-server\"",
-    "update-changelog": "node copy-changelog.js"
+    "update-changelog": "node copy-changelog.js",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:debug": "playwright test --debug",
+    "e2e:smoke": "playwright test --grep \"@smoke\" --workers=2",
+    "e2e:accessibility": "playwright test --grep \"@accessibility\" --workers=2",
+    "e2e:performance": "playwright test --grep \"@performance\" --workers=1",
+    "e2e:fast": "playwright test --workers=4",
+    "e2e:ci": "playwright test --workers=3 --reporter=github",
+    "e2e:report": "playwright show-report"
   },
   "eslintConfig": {
     "extends": [
@@ -89,10 +98,13 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "^1.40.0",
     "concurrently": "^9.1.2",
     "cross-env": "^7.0.3",
+    "express-rate-limit": "^7.1.5",
     "node-fetch": "^2.7.0",
     "nodemon": "^3.0.1",
+    "playwright": "^1.40.0",
     "sharp": "^0.34.2",
     "tailwindcss": "^3.3.5"
   },

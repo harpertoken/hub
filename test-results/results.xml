@@ -1,0 +1,282 @@
+<testsuites id="" name="" tests="85" failures="0" skipped="0" errors="0" time="52.159963">
+<testsuite name="accessibility-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="chromium" tests="7" failures="0" skipped="0" time="6.833" errors="0">
+<testcase name="Accessibility Tests › should have proper heading structure @accessibility" classname="accessibility-tests.spec.js" time="3.046">
+</testcase>
+<testcase name="Accessibility Tests › should have alt text for images @accessibility" classname="accessibility-tests.spec.js" time="0.722">
+</testcase>
+<testcase name="Accessibility Tests › should have proper form labels @accessibility" classname="accessibility-tests.spec.js" time="0.648">
+</testcase>
+<testcase name="Accessibility Tests › should have sufficient color contrast @accessibility" classname="accessibility-tests.spec.js" time="0.646">
+</testcase>
+<testcase name="Accessibility Tests › should support keyboard navigation @accessibility" classname="accessibility-tests.spec.js" time="0.618">
+</testcase>
+<testcase name="Accessibility Tests › should have proper ARIA attributes @accessibility" classname="accessibility-tests.spec.js" time="0.604">
+</testcase>
+<testcase name="Accessibility Tests › should have proper document structure @accessibility" classname="accessibility-tests.spec.js" time="0.549">
+</testcase>
+</testsuite>
+<testsuite name="performance-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="chromium" tests="6" failures="0" skipped="0" time="14.07" errors="0">
+<testcase name="Performance Tests › should load homepage within performance budget @performance" classname="performance-tests.spec.js" time="0.721">
+<system-out>
+<![CDATA[Page load time: 598ms
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should have reasonable bundle size @performance" classname="performance-tests.spec.js" time="0.715">
+<system-out>
+<![CDATA[Total JS bundle size: 1.96MB
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should render without layout shifts @performance" classname="performance-tests.spec.js" time="4.762">
+<system-out>
+<![CDATA[Layout shifts: 0, Max shift: 0
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should handle navigation efficiently @performance" classname="performance-tests.spec.js" time="0.429">
+</testcase>
+<testcase name="Performance Tests › should have good Core Web Vitals @performance" classname="performance-tests.spec.js" time="6.765">
+</testcase>
+<testcase name="Performance Tests › should handle memory efficiently @performance" classname="performance-tests.spec.js" time="0.678">
+<system-out>
+<![CDATA[Memory increase: 0.00MB
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="smoke-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="chromium" tests="4" failures="0" skipped="0" time="4.76" errors="0">
+<testcase name="Smoke Tests › should load homepage @smoke" classname="smoke-tests.spec.js" time="3.375">
+</testcase>
+<testcase name="Smoke Tests › should have working navigation @smoke" classname="smoke-tests.spec.js" time="0.506">
+</testcase>
+<testcase name="Smoke Tests › should handle basic interactions @smoke" classname="smoke-tests.spec.js" time="0.443">
+</testcase>
+<testcase name="Smoke Tests › should be responsive @smoke" classname="smoke-tests.spec.js" time="0.436">
+</testcase>
+</testsuite>
+<testsuite name="accessibility-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="firefox" tests="7" failures="0" skipped="0" time="21.25" errors="0">
+<testcase name="Accessibility Tests › should have proper heading structure @accessibility" classname="accessibility-tests.spec.js" time="4.873">
+</testcase>
+<testcase name="Accessibility Tests › should have alt text for images @accessibility" classname="accessibility-tests.spec.js" time="3.341">
+</testcase>
+<testcase name="Accessibility Tests › should have proper form labels @accessibility" classname="accessibility-tests.spec.js" time="3.829">
+</testcase>
+<testcase name="Accessibility Tests › should have sufficient color contrast @accessibility" classname="accessibility-tests.spec.js" time="4.173">
+</testcase>
+<testcase name="Accessibility Tests › should support keyboard navigation @accessibility" classname="accessibility-tests.spec.js" time="1.77">
+</testcase>
+<testcase name="Accessibility Tests › should have proper ARIA attributes @accessibility" classname="accessibility-tests.spec.js" time="1.609">
+</testcase>
+<testcase name="Accessibility Tests › should have proper document structure @accessibility" classname="accessibility-tests.spec.js" time="1.655">
+</testcase>
+</testsuite>
+<testsuite name="performance-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="firefox" tests="6" failures="0" skipped="0" time="20.098" errors="0">
+<testcase name="Performance Tests › should load homepage within performance budget @performance" classname="performance-tests.spec.js" time="1.673">
+<system-out>
+<![CDATA[Page load time: 655ms
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should have reasonable bundle size @performance" classname="performance-tests.spec.js" time="1.779">
+<system-out>
+<![CDATA[Total JS bundle size: 1.96MB
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should render without layout shifts @performance" classname="performance-tests.spec.js" time="5.513">
+<system-out>
+<![CDATA[Layout shifts: 0, Max shift: 0
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should handle navigation efficiently @performance" classname="performance-tests.spec.js" time="1.437">
+</testcase>
+<testcase name="Performance Tests › should have good Core Web Vitals @performance" classname="performance-tests.spec.js" time="8.491">
+</testcase>
+<testcase name="Performance Tests › should handle memory efficiently @performance" classname="performance-tests.spec.js" time="1.205">
+<system-out>
+<![CDATA[Memory API not available in this browser, skipping memory test
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="smoke-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="firefox" tests="4" failures="0" skipped="0" time="6.008" errors="0">
+<testcase name="Smoke Tests › should load homepage @smoke" classname="smoke-tests.spec.js" time="3.246">
+</testcase>
+<testcase name="Smoke Tests › should have working navigation @smoke" classname="smoke-tests.spec.js" time="1.037">
+</testcase>
+<testcase name="Smoke Tests › should handle basic interactions @smoke" classname="smoke-tests.spec.js" time="0.825">
+</testcase>
+<testcase name="Smoke Tests › should be responsive @smoke" classname="smoke-tests.spec.js" time="0.9">
+</testcase>
+</testsuite>
+<testsuite name="accessibility-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="webkit" tests="7" failures="0" skipped="0" time="9.901" errors="0">
+<testcase name="Accessibility Tests › should have proper heading structure @accessibility" classname="accessibility-tests.spec.js" time="3.269">
+</testcase>
+<testcase name="Accessibility Tests › should have alt text for images @accessibility" classname="accessibility-tests.spec.js" time="1.555">
+</testcase>
+<testcase name="Accessibility Tests › should have proper form labels @accessibility" classname="accessibility-tests.spec.js" time="1.351">
+</testcase>
+<testcase name="Accessibility Tests › should have sufficient color contrast @accessibility" classname="accessibility-tests.spec.js" time="0.916">
+</testcase>
+<testcase name="Accessibility Tests › should support keyboard navigation @accessibility" classname="accessibility-tests.spec.js" time="0.82">
+</testcase>
+<testcase name="Accessibility Tests › should have proper ARIA attributes @accessibility" classname="accessibility-tests.spec.js" time="0.938">
+</testcase>
+<testcase name="Accessibility Tests › should have proper document structure @accessibility" classname="accessibility-tests.spec.js" time="1.052">
+</testcase>
+</testsuite>
+<testsuite name="performance-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="webkit" tests="6" failures="0" skipped="0" time="17.09" errors="0">
+<testcase name="Performance Tests › should load homepage within performance budget @performance" classname="performance-tests.spec.js" time="1.389">
+<system-out>
+<![CDATA[Page load time: 1039ms
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should have reasonable bundle size @performance" classname="performance-tests.spec.js" time="1.328">
+<system-out>
+<![CDATA[Total JS bundle size: 1.96MB
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should render without layout shifts @performance" classname="performance-tests.spec.js" time="5.285">
+<system-out>
+<![CDATA[Layout shifts: 0, Max shift: 0
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should handle navigation efficiently @performance" classname="performance-tests.spec.js" time="0.642">
+</testcase>
+<testcase name="Performance Tests › should have good Core Web Vitals @performance" classname="performance-tests.spec.js" time="7.185">
+</testcase>
+<testcase name="Performance Tests › should handle memory efficiently @performance" classname="performance-tests.spec.js" time="1.261">
+<system-out>
+<![CDATA[Memory API not available in this browser, skipping memory test
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="smoke-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="webkit" tests="4" failures="0" skipped="0" time="5.366" errors="0">
+<testcase name="Smoke Tests › should load homepage @smoke" classname="smoke-tests.spec.js" time="3.542">
+</testcase>
+<testcase name="Smoke Tests › should have working navigation @smoke" classname="smoke-tests.spec.js" time="0.66">
+</testcase>
+<testcase name="Smoke Tests › should handle basic interactions @smoke" classname="smoke-tests.spec.js" time="0.594">
+</testcase>
+<testcase name="Smoke Tests › should be responsive @smoke" classname="smoke-tests.spec.js" time="0.57">
+</testcase>
+</testsuite>
+<testsuite name="accessibility-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="Mobile Chrome" tests="7" failures="0" skipped="0" time="6.781" errors="0">
+<testcase name="Accessibility Tests › should have proper heading structure @accessibility" classname="accessibility-tests.spec.js" time="3.212">
+</testcase>
+<testcase name="Accessibility Tests › should have alt text for images @accessibility" classname="accessibility-tests.spec.js" time="0.552">
+</testcase>
+<testcase name="Accessibility Tests › should have proper form labels @accessibility" classname="accessibility-tests.spec.js" time="0.559">
+</testcase>
+<testcase name="Accessibility Tests › should have sufficient color contrast @accessibility" classname="accessibility-tests.spec.js" time="0.684">
+</testcase>
+<testcase name="Accessibility Tests › should support keyboard navigation @accessibility" classname="accessibility-tests.spec.js" time="0.549">
+</testcase>
+<testcase name="Accessibility Tests › should have proper ARIA attributes @accessibility" classname="accessibility-tests.spec.js" time="0.623">
+</testcase>
+<testcase name="Accessibility Tests › should have proper document structure @accessibility" classname="accessibility-tests.spec.js" time="0.602">
+</testcase>
+</testsuite>
+<testsuite name="performance-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="Mobile Chrome" tests="6" failures="0" skipped="0" time="14.945" errors="0">
+<testcase name="Performance Tests › should load homepage within performance budget @performance" classname="performance-tests.spec.js" time="0.766">
+<system-out>
+<![CDATA[Page load time: 573ms
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should have reasonable bundle size @performance" classname="performance-tests.spec.js" time="0.735">
+<system-out>
+<![CDATA[Total JS bundle size: 1.96MB
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should render without layout shifts @performance" classname="performance-tests.spec.js" time="5.081">
+<system-out>
+<![CDATA[Layout shifts: 0, Max shift: 0
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should handle navigation efficiently @performance" classname="performance-tests.spec.js" time="0.533">
+</testcase>
+<testcase name="Performance Tests › should have good Core Web Vitals @performance" classname="performance-tests.spec.js" time="7.103">
+</testcase>
+<testcase name="Performance Tests › should handle memory efficiently @performance" classname="performance-tests.spec.js" time="0.727">
+<system-out>
+<![CDATA[Memory increase: 0.00MB
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="smoke-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="Mobile Chrome" tests="4" failures="0" skipped="0" time="5.338" errors="0">
+<testcase name="Smoke Tests › should load homepage @smoke" classname="smoke-tests.spec.js" time="3.886">
+</testcase>
+<testcase name="Smoke Tests › should have working navigation @smoke" classname="smoke-tests.spec.js" time="0.468">
+</testcase>
+<testcase name="Smoke Tests › should handle basic interactions @smoke" classname="smoke-tests.spec.js" time="0.52">
+</testcase>
+<testcase name="Smoke Tests › should be responsive @smoke" classname="smoke-tests.spec.js" time="0.464">
+</testcase>
+</testsuite>
+<testsuite name="accessibility-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="Mobile Safari" tests="7" failures="0" skipped="0" time="8.429" errors="0">
+<testcase name="Accessibility Tests › should have proper heading structure @accessibility" classname="accessibility-tests.spec.js" time="3.354">
+</testcase>
+<testcase name="Accessibility Tests › should have alt text for images @accessibility" classname="accessibility-tests.spec.js" time="1.119">
+</testcase>
+<testcase name="Accessibility Tests › should have proper form labels @accessibility" classname="accessibility-tests.spec.js" time="0.96">
+</testcase>
+<testcase name="Accessibility Tests › should have sufficient color contrast @accessibility" classname="accessibility-tests.spec.js" time="0.726">
+</testcase>
+<testcase name="Accessibility Tests › should support keyboard navigation @accessibility" classname="accessibility-tests.spec.js" time="0.721">
+</testcase>
+<testcase name="Accessibility Tests › should have proper ARIA attributes @accessibility" classname="accessibility-tests.spec.js" time="0.695">
+</testcase>
+<testcase name="Accessibility Tests › should have proper document structure @accessibility" classname="accessibility-tests.spec.js" time="0.854">
+</testcase>
+</testsuite>
+<testsuite name="performance-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="Mobile Safari" tests="6" failures="0" skipped="0" time="16.065" errors="0">
+<testcase name="Performance Tests › should load homepage within performance budget @performance" classname="performance-tests.spec.js" time="1.073">
+<system-out>
+<![CDATA[Page load time: 852ms
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should have reasonable bundle size @performance" classname="performance-tests.spec.js" time="1.064">
+<system-out>
+<![CDATA[Total JS bundle size: 1.96MB
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should render without layout shifts @performance" classname="performance-tests.spec.js" time="5.097">
+<system-out>
+<![CDATA[Layout shifts: 0, Max shift: 0
+]]>
+</system-out>
+</testcase>
+<testcase name="Performance Tests › should handle navigation efficiently @performance" classname="performance-tests.spec.js" time="0.616">
+</testcase>
+<testcase name="Performance Tests › should have good Core Web Vitals @performance" classname="performance-tests.spec.js" time="7.148">
+</testcase>
+<testcase name="Performance Tests › should handle memory efficiently @performance" classname="performance-tests.spec.js" time="1.067">
+<system-out>
+<![CDATA[Memory API not available in this browser, skipping memory test
+]]>
+</system-out>
+</testcase>
+</testsuite>
+<testsuite name="smoke-tests.spec.js" timestamp="2025-09-19T22:52:53.216Z" hostname="Mobile Safari" tests="4" failures="0" skipped="0" time="5.097" errors="0">
+<testcase name="Smoke Tests › should load homepage @smoke" classname="smoke-tests.spec.js" time="3.505">
+</testcase>
+<testcase name="Smoke Tests › should have working navigation @smoke" classname="smoke-tests.spec.js" time="0.533">
+</testcase>
+<testcase name="Smoke Tests › should handle basic interactions @smoke" classname="smoke-tests.spec.js" time="0.529">
+</testcase>
+<testcase name="Smoke Tests › should be responsive @smoke" classname="smoke-tests.spec.js" time="0.53">
+</testcase>
+</testsuite>
+</testsuites>

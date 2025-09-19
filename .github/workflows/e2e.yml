@@ -1,0 +1,196 @@
+name: E2E Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      test_type:
+        description: 'Type of E2E tests to run'
+        required: true
+        default: 'all'
+        type: choice
+        options:
+        - all
+        - smoke
+        - regression
+        - accessibility
+        - performance
+
+jobs:
+  e2e-tests:
+    name: Run E2E Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+
+    - name: Build application
+      run: |
+        echo "Building application..."
+        npm run build
+        echo "Build completed. Checking build directory..."
+        ls -la build/
+        echo "Build directory contents:"
+        find build/ -name "*.html" -o -name "*.js" | head -10
+
+    - name: Run E2E tests
+      run: |
+        if [ "${{ github.event.inputs.test_type }}" == "smoke" ]; then
+          npx playwright test --grep "@smoke" --workers=2
+        elif [ "${{ github.event.inputs.test_type }}" == "regression" ]; then
+          npx playwright test --grep "@regression" --workers=3
+        elif [ "${{ github.event.inputs.test_type }}" == "accessibility" ]; then
+          npx playwright test --grep "@accessibility" --workers=2
+        elif [ "${{ github.event.inputs.test_type }}" == "performance" ]; then
+          npx playwright test --grep "@performance" --workers=1
+        else
+          npx playwright test --workers=3
+        fi
+      env:
+        BASE_URL: http://localhost:3030
+        REACT_APP_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+        PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: 0
+
+    - name: Upload test results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: e2e-test-results-${{ github.run_number }}
+        path: |
+          test-results/
+          playwright-report/
+        retention-days: 7
+
+    - name: Upload screenshots on failure
+      uses: actions/upload-artifact@v4
+      if: failure()
+      with:
+        name: e2e-screenshots-${{ github.run_number }}
+        path: test-results/screenshots/
+        retention-days: 7
+
+    - name: Generate test summary
+      if: always()
+      run: |
+        if [ -f "playwright-report/index.html" ]; then
+          echo "## E2E Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+          echo "**Test Type:** ${{ github.event.inputs.test_type || 'all' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- [View detailed report](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }})" >> $GITHUB_STEP_SUMMARY
+          echo "- Screenshots available in artifacts (on failure)" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+        fi
+
+  accessibility-tests:
+    name: Accessibility Tests
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+
+    - name: Build application
+      run: |
+        echo "Building application for accessibility tests..."
+        npm run build
+        ls -la build/
+
+    - name: Run accessibility tests
+      run: npx playwright test --grep "@accessibility" --workers=2
+      env:
+        BASE_URL: http://localhost:3030
+        REACT_APP_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+    - name: Generate accessibility report
+      if: always()
+      run: |
+        echo "## Accessibility Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Accessibility Checks" >> $GITHUB_STEP_SUMMARY
+        echo "- ARIA attributes validation" >> $GITHUB_STEP_SUMMARY
+        echo "- Keyboard navigation" >> $GITHUB_STEP_SUMMARY
+        echo "- Screen reader compatibility" >> $GITHUB_STEP_SUMMARY
+        echo "- Color contrast ratios" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+
+  performance-tests:
+    name: Performance Tests
+    runs-on: ubuntu-latest
+    needs: e2e-tests
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20.x'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install Playwright browsers
+      run: npx playwright install --with-deps
+
+    - name: Build application
+      run: |
+        echo "Building application for performance tests..."
+        npm run build
+        ls -la build/
+
+    - name: Run performance tests
+      run: npx playwright test --grep "@performance" --workers=1
+      env:
+        BASE_URL: http://localhost:3030
+        REACT_APP_GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+
+    - name: Generate performance report
+      if: always()
+      run: |
+        echo "## Performance Test Results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "**Status:** ${{ job.status }}" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY
+        echo "### Performance Metrics" >> $GITHUB_STEP_SUMMARY
+        echo "- Page load times" >> $GITHUB_STEP_SUMMARY
+        echo "- Memory usage" >> $GITHUB_STEP_SUMMARY
+        echo "- Core Web Vitals" >> $GITHUB_STEP_SUMMARY
+        echo "- Bundle size impact" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY

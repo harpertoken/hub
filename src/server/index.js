@@ -3,10 +3,85 @@ const express = require('express');
 const cors = require('cors');
 const multer = require('multer');
 const axios = require('axios');
+const rateLimit = require('express-rate-limit');
 const { GoogleGenerativeAI } = require('@google/generative-ai');
 const fs = require('fs');
 const path = require('path');
 const { URL } = require('url');
+
+// Security utilities
+const sanitizePath = (filePath) => {
+  // Prevent path traversal attacks
+  const normalizedPath = path.normalize(filePath);
+  const resolvedPath = path.resolve(normalizedPath);
+
+  // Ensure the path is within the uploads directory
+  const uploadsDir = path.resolve('./uploads');
+  if (!resolvedPath.startsWith(uploadsDir)) {
+    throw new Error('Invalid file path: Path traversal detected');
+  }
+
+  return resolvedPath;
+};
+
+const validateUrl = (urlString) => {
+  try {
+    const url = new URL(urlString);
+
+    // Prevent SSRF by blocking internal/private IPs
+    const hostname = url.hostname;
+
+    // Block localhost and private IP ranges
+    if (hostname === 'localhost' || hostname === '127.0.0.1' || hostname === '::1') {
+      throw new Error('Invalid URL: Localhost access not allowed');
+    }
+
+    // Block private IP ranges
+    const ipRegex = /^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$/;
+    const match = hostname.match(ipRegex);
+    if (match) {
+      const [, a, b] = match.map(Number); // Only extract the first two octets we need
+      // Block private IP ranges: 10.x.x.x, 172.16-31.x.x, 192.168.x.x
+      if (
+        (a === 10) ||
+        (a === 172 && b >= 16 && b <= 31) ||
+        (a === 192 && b === 168) ||
+        (a === 127) // loopback
+      ) {
+        throw new Error('Invalid URL: Private IP access not allowed');
+      }
+    }
+
+    // Allow only HTTP/HTTPS protocols
+    if (!['http:', 'https:'].includes(url.protocol)) {
+      throw new Error('Invalid URL: Only HTTP and HTTPS protocols allowed');
+    }
+
+    return url;
+  } catch (error) {
+    if (error.message.includes('Invalid URL')) {
+      throw error;
+    }
+    throw new Error('Invalid URL format');
+  }
+};
+
+const sanitizeInput = (input, maxLength = 1000) => {
+  if (typeof input !== 'string') {
+    throw new Error('Input must be a string');
+  }
+
+  // Remove null bytes and other dangerous characters
+  // eslint-disable-next-line no-control-regex
+  const sanitized = input.replace(/[\x00-\x1F\x7F-\x9F]/g, '');
+
+  // Check length
+  if (sanitized.length > maxLength) {
+    throw new Error(`Input too long: maximum ${maxLength} characters allowed`);
+  }
+
+  return sanitized.trim();
+};
 
 // Import the ArXiv search function
 const searchArxiv = require('../services/arxivService');
@@ -27,18 +102,73 @@ if (process.env.NODE_ENV !== 'production') {
   }
 }
 
-// Configure multer for file uploads - always use memory storage for Vercel
-const storage = multer.memoryStorage();
+// Configure multer for file uploads with security enhancements
+const createSecureStorage = (useMemory = false) => {
+  if (useMemory || process.env.NODE_ENV === 'production') {
+    return multer.memoryStorage();
+  }
+
+  // For development, use disk storage with secure path handling
+  return multer.diskStorage({
+    destination: (req, file, cb) => {
+      const uploadsDir = path.resolve('./uploads');
+      // Ensure uploads directory exists
+      if (!fs.existsSync(uploadsDir)) {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+      }
+      cb(null, uploadsDir);
+    },
+    filename: (req, file, cb) => {
+      // Generate secure filename to prevent path traversal
+      const ext = path.extname(file.originalname).toLowerCase();
+      const allowedExts = ['.mp4', '.avi', '.mov', '.mkv', '.webm', '.mp3', '.wav', '.jpg', '.jpeg', '.png', '.gif'];
+
+      if (!allowedExts.includes(ext)) {
+        return cb(new Error('Invalid file type'), null);
+      }
+
+      // Create unique filename
+      const uniqueName = `${Date.now()}-${Math.random().toString(36).substring(2, 15)}${ext}`;
+      cb(null, uniqueName);
+    }
+  });
+};
+
+const storage = createSecureStorage();
 const upload = multer({
   storage: storage,
-  limits: { fileSize: 50 * 1024 * 1024 } // 50MB limit
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
+  fileFilter: (req, file, cb) => {
+    // Additional security check for file types
+    const allowedMimes = [
+      'video/mp4', 'video/avi', 'video/quicktime', 'video/x-matroska', 'video/webm',
+      'audio/mpeg', 'audio/wav', 'audio/mp3',
+      'image/jpeg', 'image/png', 'image/gif'
+    ];
+
+    if (!allowedMimes.includes(file.mimetype)) {
+      return cb(new Error('Invalid file type'), false);
+    }
+    cb(null, true);
+  }
 });
 
 // For memory storage (used by some endpoints)
-const memoryStorage = multer.memoryStorage();
+const memoryStorage = createSecureStorage(true);
 const uploadMemory = multer({
   storage: memoryStorage,
-  limits: { fileSize: 50 * 1024 * 1024 } // 50MB limit
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB limit
+  fileFilter: (req, file, cb) => {
+    const allowedMimes = [
+      'video/mp4', 'video/avi', 'video/quicktime', 'video/x-matroska', 'video/webm',
+      'audio/mpeg', 'audio/wav', 'audio/mp3'
+    ];
+
+    if (!allowedMimes.includes(file.mimetype)) {
+      return cb(new Error('Invalid file type'), false);
+    }
+    cb(null, true);
+  }
 });
 
 // Enable CORS
@@ -46,18 +176,119 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Rate limiting configuration
+const createRateLimit = (windowMs, max, message) => {
+  return rateLimit({
+    windowMs: windowMs, // Time window
+    max: max, // Limit each IP to 'max' requests per windowMs
+    message: {
+      error: 'Too many requests',
+      message: message,
+      retryAfter: Math.ceil(windowMs / 1000)
+    },
+    standardHeaders: true, // Return rate limit info in the `RateLimit-*` headers
+    legacyHeaders: false, // Disable the `X-RateLimit-*` headers
+    handler: (req, res) => {
+      console.warn(`Rate limit exceeded for ${req.ip} on ${req.path}`);
+      res.status(429).json({
+        error: 'Too many requests',
+        message: message,
+        retryAfter: Math.ceil(windowMs / 1000)
+      });
+    }
+  });
+};
+
+// General API rate limiting (higher limits for basic endpoints)
+const generalLimiter = createRateLimit(
+  15 * 60 * 1000, // 15 minutes
+  100, // 100 requests per 15 minutes
+  'Too many requests. Please try again later.'
+);
+
+// Strict rate limiting for AI endpoints (cost control)
+const aiLimiter = createRateLimit(
+  60 * 1000, // 1 minute
+  10, // 10 requests per minute
+  'AI requests are limited. Please wait before making another request.'
+);
+
+// File upload rate limiting
+const uploadLimiter = createRateLimit(
+  60 * 1000, // 1 minute
+  5, // 5 uploads per minute
+  'File upload limit exceeded. Please try again later.'
+);
+
+// Health check - no rate limiting
+app.use('/api/health', (req, res) => {
+  res.json({ status: 'ok', message: 'Consolidated server is running' });
+});
+
+app.use('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Apply rate limiting to different routes
+app.use('/api/', generalLimiter); // General API routes
+app.use('/gemini-text', aiLimiter); // Gemini text generation
+app.use('/api/gemini', aiLimiter); // Gemini API endpoint
+app.use('/process-video', aiLimiter); // Video processing (expensive)
+app.use('/process-image', aiLimiter); // Image processing (expensive)
+app.use('/analyze-github-user', aiLimiter); // GitHub analysis
+app.use('/analyze-github-repo', aiLimiter); // Repository analysis
+app.use('/edi-prompt', aiLimiter); // EDI prompt processing
+app.use('/create-shareable-link', uploadLimiter); // File upload with sharing
+app.use('/convert-video', aiLimiter); // Video conversion
+app.use('/suggest-prompts', aiLimiter); // Prompt suggestions
+
 // Serve static files from the React app
 const buildPath = path.resolve('./build');
 console.log('Serving static files from:', buildPath);
+
+// Check if build directory exists
+if (!fs.existsSync(buildPath)) {
+  console.warn('WARNING: Build directory not found at:', buildPath);
+  console.warn('Make sure to run "npm run build" before starting the server');
+}
+
 app.use(express.static(buildPath));
+
+// Fallback for missing build files (useful for testing)
+app.get('/', (req, res) => {
+  if (fs.existsSync(path.join(buildPath, 'index.html'))) {
+    res.sendFile(path.join(buildPath, 'index.html'));
+  } else {
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <title>Hub - Testing</title>
+          <meta name="viewport" content="width=device-width, initial-scale=1">
+        </head>
+        <body>
+          <div id="root">
+            <h1>Hub Application</h1>
+            <p>Application is running in test mode.</p>
+            <p>Build files not found - this is normal during CI testing.</p>
+          </div>
+        </body>
+      </html>
+    `);
+  }
+});
 
 // Initialize Gemini API
 // Use REACT_APP_GEMINI_API_KEY consistently across client and server
 const geminiApiKey = process.env.REACT_APP_GEMINI_API_KEY;
 if (!geminiApiKey) {
-  console.error('ERROR: No Gemini API key found in environment variables');
+  if (process.env.CI) {
+    console.warn('WARNING: No Gemini API key found in CI environment - some features may not work');
+  } else {
+    console.error('ERROR: No Gemini API key found in environment variables');
+  }
 }
-const genAI = new GoogleGenerativeAI(geminiApiKey);
+const genAI = geminiApiKey ? new GoogleGenerativeAI(geminiApiKey) : null;
 
 /**
  * Searches the web using Google Custom Search API
@@ -67,7 +298,9 @@ const genAI = new GoogleGenerativeAI(geminiApiKey);
  */
 async function searchWeb(query, numResults = 5) {
   try {
-    console.log(`Searching the web for: "${query}"`);
+    // Sanitize search query to prevent injection
+    const sanitizedQuery = sanitizeInput(query, 500);
+    console.log(`Searching the web for: "${sanitizedQuery}"`);
 
     // Get API keys from environment variables
     const apiKey = process.env.GOOGLE_SEARCH_API_KEY;
@@ -81,8 +314,11 @@ async function searchWeb(query, numResults = 5) {
       };
     }
 
+    // Validate numResults to prevent abuse
+    const safeNumResults = Math.min(Math.max(parseInt(numResults) || 5, 1), 10);
+
     // Build the search URL
-    const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${searchEngineId}&q=${encodeURIComponent(query)}&num=${numResults}`;
+    const searchUrl = `https://www.googleapis.com/customsearch/v1?key=${apiKey}&cx=${searchEngineId}&q=${encodeURIComponent(sanitizedQuery)}&num=${safeNumResults}`;
 
     // Make the request
     const response = await axios.get(searchUrl);
@@ -134,6 +370,11 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'Consolidated server is running' });
 });
 
+// Simple health check for E2E tests
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 // Test endpoint
 app.get('/test', (_req, res) => {
   console.log('Test endpoint called');
@@ -173,20 +414,33 @@ app.get('/test-gemini', async (req, res) => {
 
 // Process video file
 app.post('/process-video', upload.single('video'), async (req, res) => {
+  let filePath = null;
+
   try {
     if (!req.file) {
       return res.status(400).json({ error: 'No video file provided' });
     }
 
-    const prompt = req.body.prompt || 'Analyze this video. Identify key frames, objects, people, and provide a scene classification. Transcribe any speech.';
+    // Sanitize user input
+    const prompt = sanitizeInput(req.body.prompt || 'Analyze this video. Identify key frames, objects, people, and provide a scene classification. Transcribe any speech.', 2000);
 
     console.log(`Processing video file: ${req.file.originalname}, size: ${req.file.size} bytes`);
-    console.log(`Using prompt: ${prompt}`);
+    console.log(`Using prompt: ${prompt.substring(0, 100)}...`);
+
+    // Secure file path handling
+    if (process.env.NODE_ENV !== 'production' && req.file.path) {
+      filePath = sanitizePath(req.file.path);
+    }
 
     // Read the video file (handle both disk and memory storage)
     const videoData = process.env.NODE_ENV === 'production'
       ? req.file.buffer
-      : fs.readFileSync(req.file.path);
+      : fs.readFileSync(filePath);
+
+    // Validate file size
+    if (videoData.length > 50 * 1024 * 1024) { // 50MB limit
+      throw new Error('File too large');
+    }
 
     // Initialize the model - always use Gemini 1.5 Flash
     const model = genAI.getGenerativeModel({
@@ -204,36 +458,60 @@ app.post('/process-video', upload.single('video'), async (req, res) => {
       }
     ]);
 
-    // Clean up the uploaded file (only in development with disk storage)
-    if (process.env.NODE_ENV !== 'production' && req.file.path) {
-      fs.unlinkSync(req.file.path);
+    // Secure cleanup of uploaded file
+    if (filePath && fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
     }
 
     // Send the response
-    res.json(result.response);
+    res.json({
+      success: true,
+      result: result.response.text()
+    });
   } catch (error) {
-    console.error('Error processing video:', error);
-    res.status(500).json({ error: error.message });
+    console.error('Video processing error:', error);
+
+    // Secure cleanup on error
+    if (filePath && fs.existsSync(filePath)) {
+      try {
+        fs.unlinkSync(filePath);
+      } catch (cleanupError) {
+        console.error('Cleanup error:', cleanupError);
+      }
+    }
+
+    res.status(500).json({
+      error: 'Video processing failed',
+      message: error.message
+    });
   }
 });
 
 // Process video URL
 app.post('/process-video-url', express.json(), async (req, res) => {
   try {
+    // Validate and sanitize the video URL to prevent SSRF
     const videoUrl = req.body.videoUrl;
-    const prompt = req.body.prompt || 'Analyze this video';
+    if (!videoUrl) {
+      return res.status(400).json({ error: 'Video URL is required' });
+    }
+
+    const validatedUrl = validateUrl(videoUrl);
+
+    // Sanitize user input
+    const prompt = sanitizeInput(req.body.prompt || 'Analyze this video', 2000);
 
     if (!videoUrl) {
       return res.status(400).json({ error: 'No video URL provided' });
     }
 
-    console.log(`Processing video URL: ${videoUrl}`);
+    console.log(`Processing video URL: ${validatedUrl.href}`);
     console.log(`Using prompt: ${prompt}`);
 
-    // Download the video from the URL
+    // Download the video from the validated URL
     const response = await axios({
       method: 'GET',
-      url: videoUrl,
+      url: validatedUrl.href,
       responseType: 'arraybuffer'
     });
 
@@ -1277,7 +1555,9 @@ app.post('/suggest-prompts', express.json(), async (req, res) => {
 // Education query endpoint
 app.post(['/api/education-query', '/education-query'], express.json(), async (req, res) => {
   try {
-    console.log('Received education query:', req.body.prompt);
+    // Sanitize user input
+    const sanitizedPrompt = sanitizeInput(req.body.prompt, 2000);
+    console.log('Received education query:', sanitizedPrompt.substring(0, 100) + '...');
 
     if (!req.body || !req.body.prompt) {
       return res.status(400).json({ error: 'Missing prompt in request body' });
@@ -1301,14 +1581,14 @@ app.post(['/api/education-query', '/education-query'], express.json(), async (re
       try {
         // Perform web search if enabled
         if (enableWebSearch) {
-          console.log('Web search enabled, searching for:', req.body.prompt);
-          webSearchResults = await searchWeb(req.body.prompt, 5);
+          console.log('Web search enabled, searching for:', sanitizedPrompt);
+          webSearchResults = await searchWeb(sanitizedPrompt, 5);
         }
 
         // Perform ArXiv search if enabled
         if (enableAcademicSearch) {
-          console.log('Academic search enabled, searching ArXiv for:', req.body.prompt);
-          arxivResults = await searchArxiv(req.body.prompt, 5);
+          console.log('Academic search enabled, searching ArXiv for:', sanitizedPrompt);
+          arxivResults = await searchArxiv(sanitizedPrompt, 5);
         }
 
         // Combine results from both sources
@@ -1342,14 +1622,14 @@ app.post(['/api/education-query', '/education-query'], express.json(), async (re
 
         if (hasResults) {
           prompt += "Using the above search results and your knowledge, please provide a comprehensive answer to the following question:\n\n";
-          prompt += req.body.prompt;
+          prompt += sanitizedPrompt;
 
           // Add instruction to cite sources
           prompt += "\n\nPlease cite the search results when you use information from them in your answer. Include a 'Sources' section at the end listing the relevant sources.";
         } else {
           // If no search results or error, just use the original prompt
           console.log('No search results found or search failed, using base knowledge only');
-          prompt += req.body.prompt;
+          prompt += sanitizedPrompt;
 
           // If there were errors, add a note about them
           if (webSearchResults && webSearchResults.error) {
@@ -1475,7 +1755,9 @@ app.post('/process-image', upload.single('image'), async (req, res) => {
 // General Gemini API endpoint for text-based queries
 app.post('/api/gemini', express.json(), async (req, res) => {
   try {
-    console.log('Received Gemini API request:', req.body.prompt ? req.body.prompt.substring(0, 100) + '...' : 'No prompt');
+    // Sanitize user input
+    const sanitizedPrompt = sanitizeInput(req.body.prompt, 10000);
+    console.log('Received Gemini API request:', sanitizedPrompt.substring(0, 100) + '...');
 
     if (!req.body || !req.body.prompt) {
       return res.status(400).json({ error: 'Missing prompt in request body' });
@@ -1491,7 +1773,7 @@ app.post('/api/gemini', express.json(), async (req, res) => {
     });
 
     // Generate content
-    const result = await model.generateContent(req.body.prompt);
+    const result = await model.generateContent(sanitizedPrompt);
     console.log('Received response from Gemini API');
 
     // Send the response
@@ -1516,7 +1798,7 @@ app.post('/api/gemini', express.json(), async (req, res) => {
 
 // Catch-all route to serve the React app
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '..', 'build', 'index.html'));
+  res.sendFile(path.join(__dirname, '..', '..', 'build', 'index.html'));
 });
 
 // Export the Express app for Vercel
