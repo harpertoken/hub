@@ -15,8 +15,6 @@ Content creation and learning platform.
 - Works on all devices
 - Real-time updates
 
-***
-
 ### Quick start
 
 Need Node.js 18+ and npm/pnpm.
@@ -33,8 +31,6 @@ npm run server  # in another terminal
 
 Done. Click "New" to make your first post.
 
-***
-
 ### Tech
 
 - React 18 + hooks
@@ -42,8 +38,6 @@ Done. Click "New" to make your first post.
 - Firebase + Google AI
 - Tailwind CSS
 - Vercel ready
-
-***
 
 ### Dev commands
 
@@ -53,24 +47,16 @@ npm run build  # production build
 npm test       # run tests
 ```
 
-***
-
 ### Deploy
 
 Ready for Vercel. Just push and deploy. Set your env vars in Vercel dashboard.
-
-***
 
 ### Contribute
 
 Fork, make changes, test, PR. Keep it clean.
 
-***
-
 ### Security
 
 Don't commit API keys. Use HTTPS. Keep deps updated. Follow AI policy.
-
-***
 
 #

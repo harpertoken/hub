@@ -23,6 +23,8 @@ import AIUsagePolicy from './pages/AIUsagePolicy';
 import About from './pages/About';
 import Education from './pages/Education';
 import Cookbook from './pages/Cookbook';
+import UserInterface from './pages/UserInterface';
+import SimpleUI from './pages/SimpleUI';
 import CookbookSimple from './components/features/CookbookSimple';
 
 
@@ -244,32 +246,44 @@ const MainContent = () => {
                <div className="flex items-center">
                </div>
 
-              {/* Navigation - Absolute positioned on the right */}
-              <div className="absolute right-0 hidden md:flex items-center gap-4">
-                <a
-                  href="/education"
-                  className="nav-link-wave transition-colors duration-200 text-xs px-3 py-1 rounded-sm"
-                  style={{
-                    color: scrollPosition > 20 ? '#666666' : '#666666',
-                    opacity: scrollPosition > 20 ? 0.9 : 1
-                  }}
-                  onMouseEnter={(e) => e.target.style.color = '#000000'}
-                  onMouseLeave={(e) => e.target.style.color = '#666666'}
-                >
-                  <span>Education</span>
-                </a>
-                <a
-                  href="/diagnostics"
-                  className="nav-link-wave transition-colors duration-200 text-xs px-3 py-1 rounded-sm"
-                  style={{
-                    color: scrollPosition > 20 ? '#666666' : '#666666',
-                    opacity: scrollPosition > 20 ? 0.7 : 0.7
-                  }}
-                  onMouseEnter={(e) => e.target.style.color = '#000000'}
-                  onMouseLeave={(e) => e.target.style.color = '#666666'}
-                >
-                  <span>Diagnostics</span>
-                </a>
+               {/* Navigation - Absolute positioned on the right */}
+               <div className="absolute right-0 hidden md:flex items-center gap-4">
+                 <a
+                   href="/education"
+                   className="nav-link-wave transition-colors duration-200 text-xs px-3 py-1 rounded-sm"
+                   style={{
+                     color: scrollPosition > 20 ? '#666666' : '#666666',
+                     opacity: scrollPosition > 20 ? 0.9 : 1
+                   }}
+                   onMouseEnter={(e) => e.target.style.color = '#000000'}
+                   onMouseLeave={(e) => e.target.style.color = '#666666'}
+                 >
+                   <span>Education</span>
+                 </a>
+                 <a
+                   href="/ui"
+                   className="nav-link-wave transition-colors duration-200 text-xs px-3 py-1 rounded-sm"
+                   style={{
+                     color: scrollPosition > 20 ? '#666666' : '#666666',
+                     opacity: scrollPosition > 20 ? 0.8 : 0.8
+                   }}
+                   onMouseEnter={(e) => e.target.style.color = '#000000'}
+                   onMouseLeave={(e) => e.target.style.color = '#666666'}
+                 >
+                   <span>UI</span>
+                 </a>
+                 <a
+                   href="/diagnostics"
+                   className="nav-link-wave transition-colors duration-200 text-xs px-3 py-1 rounded-sm"
+                   style={{
+                     color: scrollPosition > 20 ? '#666666' : '#666666',
+                     opacity: scrollPosition > 20 ? 0.7 : 0.7
+                   }}
+                   onMouseEnter={(e) => e.target.style.color = '#000000'}
+                   onMouseLeave={(e) => e.target.style.color = '#666666'}
+                 >
+                   <span>Diagnostics</span>
+                 </a>
                 <button
                   onClick={toggleAIFeatures}
                   className={`nav-link-wave flex items-center gap-1.5 hover:text-black transition-colors duration-200 text-xs px-3 py-1 rounded-sm ${
@@ -459,6 +473,8 @@ const App = () => {
                     <Route path="/cookbook" element={<Cookbook />} />
                     <Route path="/cookbook-simple" element={<CookbookSimple />} />
                     <Route path="/education" element={<Education />} />
+                    <Route path="/ui" element={<UserInterface />} />
+                    <Route path="/simple-ui" element={<SimpleUI />} />
                     <Route path="/diagnostics" element={<Diagnostics />} />
                     <Route path="/edi" element={<EDI />} />
                     <Route path="/" element={<MainContent />} />

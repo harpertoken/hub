@@ -89,6 +89,8 @@ const Education = () => {
   const [promptSuggestions, setPromptSuggestions] = useState([]);
   /** @type {[boolean, Function]} Whether to show prompt suggestions */
   const [showPromptSuggestions, setShowPromptSuggestions] = useState(false);
+  /** @type {[number, Function]} Currently selected suggestion index for keyboard navigation */
+  const [selectedSuggestionIndex, setSelectedSuggestionIndex] = useState(-1);
 
   // Screen recording states
   /** @type {[boolean, Function]} Whether screen recording is active */
@@ -1017,6 +1019,7 @@ If the problem persists, the server might be down or experiencing issues.
   const selectPromptSuggestion = (suggestion) => {
     setPrompt(suggestion);
     setShowPromptSuggestions(false);
+    setSelectedSuggestionIndex(-1);
   };
 
   /**
@@ -1028,6 +1031,9 @@ If the problem persists, the server might be down or experiencing issues.
   const handleInputChange = (value) => {
     // Update prompt state immediately
     setPrompt(value);
+
+    // Reset selected suggestion index when user types
+    setSelectedSuggestionIndex(-1);
 
     // Clear any existing timeout to implement debouncing
     if (suggestionTimeoutRef.current) {
@@ -1170,356 +1176,534 @@ If the problem persists, the server might be down or experiencing issues.
         <div className="w-full mx-auto pb-16">{/* Added padding bottom */}
           <form onSubmit={handleSubmit} className="relative">
             <div className="relative">
-              <input
-                type="text"
-                value={prompt}
-                onChange={(e) => handleInputChange(e.target.value)}
-                placeholder="What would you like to learn about?"
-                className="w-3/4 p-3 pr-16 text-base border-0 border-b focus:outline-none transition-colors"
-                style={{
-                  backgroundColor: '#f9f9f9',
-                  color: '#000000',
-                  borderColor: '#e5e5e5',
-                  backdropFilter: 'blur(8px)',
-                  WebkitBackdropFilter: 'blur(8px)',
-                  boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
-                  borderRadius: '4px'
-                }}
-              />
+               <input
+                 type="text"
+                 value={prompt}
+                 onChange={(e) => handleInputChange(e.target.value)}
+                 onKeyDown={(e) => {
+                   if (!showPromptSuggestions || promptSuggestions.length === 0) return;
 
-              {/* Prompt Suggestions */}
-              {showPromptSuggestions && promptSuggestions.length > 0 && (
-                <div
-                  ref={suggestionsRef}
-                  className="absolute z-10 mt-1 w-full border-0 shadow-sm rounded-md overflow-hidden"
-                  style={{
-                    backgroundColor: '#f9f9f9',
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-                    border: `1px solid #e5e5e5`
-                  }}
-                >
-                  <div className="max-h-60 overflow-y-auto">
-                    {promptSuggestions.length === 1 && promptSuggestions[0].startsWith('Improving your prompt') ? (
-                      <div className="p-3 flex items-center">
-                        <RefreshCw className="w-3 h-3 animate-spin mr-2" style={{color: '#666666'}} />
-                        <span className="text-sm" style={{color: '#000000'}}>{promptSuggestions[0]}</span>
-                      </div>
-                    ) : (
-                      promptSuggestions.map((suggestion, index) => (
-                        <button
-                          key={index}
-                          onClick={() => selectPromptSuggestion(suggestion)}
-                          className="w-full text-left p-3 transition-colors duration-200"
-                          style={{
-                            borderBottom: index < promptSuggestions.length - 1 ? `1px solid #e5e5e5` : 'none',
-                            backgroundColor: 'transparent'
-                          }}
-                          onMouseEnter={(e) => e.target.style.backgroundColor = '#f0f0f0'}
-                          onMouseLeave={(e) => e.target.style.backgroundColor = 'transparent'}
-                        >
-                          <span className="text-sm" style={{color: '#000000'}}>{suggestion}</span>
-                        </button>
-                      ))
-                    )}
-                  </div>
-                </div>
-              )}
+                   if (e.key === 'ArrowDown') {
+                     e.preventDefault();
+                     setSelectedSuggestionIndex(prev =>
+                       prev < promptSuggestions.length - 1 ? prev + 1 : 0
+                     );
+                   } else if (e.key === 'ArrowUp') {
+                     e.preventDefault();
+                     setSelectedSuggestionIndex(prev =>
+                       prev > 0 ? prev - 1 : promptSuggestions.length - 1
+                     );
+                   } else if (e.key === 'Enter' && selectedSuggestionIndex >= 0) {
+                     e.preventDefault();
+                     selectPromptSuggestion(promptSuggestions[selectedSuggestionIndex]);
+                   } else if (e.key === 'Escape') {
+                     setShowPromptSuggestions(false);
+                     setSelectedSuggestionIndex(-1);
+                   }
+                 }}
+                 placeholder="What would you like to learn about?"
+                 className="w-full p-4 pr-20 text-base border-0 focus:outline-none transition-all duration-300 ease-in-out"
+                 style={{
+                   backgroundColor: '#f9f9f9',
+                   color: '#000000',
+                   borderColor: '#e5e5e5',
+                   backdropFilter: 'blur(8px)',
+                   WebkitBackdropFilter: 'blur(8px)',
+                   boxShadow: '0 4px 20px rgba(0, 0, 0, 0.05)',
+                   borderRadius: '12px',
+                   border: '2px solid transparent'
+                 }}
+                 onMouseEnter={(e) => {
+                   e.target.style.backgroundColor = '#ffffff';
+                   e.target.style.boxShadow = '0 8px 30px rgba(0, 0, 0, 0.1)';
+                   e.target.style.borderColor = '#e5e5e5';
+                   e.target.style.transform = 'translateY(-1px)';
+                 }}
+                 onMouseLeave={(e) => {
+                   e.target.style.backgroundColor = '#f9f9f9';
+                   e.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.05)';
+                   e.target.style.borderColor = 'transparent';
+                   e.target.style.transform = 'translateY(0)';
+                 }}
+                 onFocus={(e) => {
+                   e.target.style.backgroundColor = '#ffffff';
+                   e.target.style.boxShadow = '0 12px 40px rgba(0, 0, 0, 0.15)';
+                   e.target.style.borderColor = '#e5e5e5';
+                   e.target.style.transform = 'translateY(-2px)';
+                   e.target.style.outline = 'none';
+                 }}
+                 onBlur={(e) => {
+                   // Delay hiding suggestions to allow for clicks
+                   setTimeout(() => {
+                     setShowPromptSuggestions(false);
+                     setSelectedSuggestionIndex(-1);
+                   }, 150);
+                   e.target.style.backgroundColor = '#f9f9f9';
+                   e.target.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.05)';
+                   e.target.style.borderColor = 'transparent';
+                   e.target.style.transform = 'translateY(0)';
+                 }}
+                 aria-label="Search input"
+                 aria-expanded={showPromptSuggestions}
+                 aria-haspopup="listbox"
+                 role="combobox"
+                 aria-activedescendant={selectedSuggestionIndex >= 0 ? `suggestion-${selectedSuggestionIndex}` : undefined}
+               />
+
+               {/* Enhanced Prompt Suggestions */}
+               {showPromptSuggestions && promptSuggestions.length > 0 && (
+                 <div
+                   ref={suggestionsRef}
+                   className="absolute z-10 mt-2 w-full border-0 shadow-lg rounded-xl overflow-hidden animate-in fade-in-0 zoom-in-95 duration-200"
+                   style={{
+                     backgroundColor: '#ffffff',
+                     backdropFilter: 'blur(12px)',
+                     WebkitBackdropFilter: 'blur(12px)',
+                     boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+                     border: `1px solid #e5e5e5`,
+                     maxHeight: '280px'
+                   }}
+                   role="listbox"
+                   aria-label="Prompt suggestions"
+                 >
+                   <div className="max-h-60 overflow-y-auto scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                     {promptSuggestions.length === 1 && promptSuggestions[0].startsWith('Improving your prompt') ? (
+                       <div className="p-4 flex items-center justify-center">
+                         <RefreshCw className="w-4 h-4 animate-spin mr-3" style={{color: '#6b7280'}} />
+                         <span className="text-sm font-medium" style={{color: '#374151'}}>{promptSuggestions[0]}</span>
+                       </div>
+                     ) : (
+                       promptSuggestions.map((suggestion, index) => (
+                         <button
+                           key={index}
+                           id={`suggestion-${index}`}
+                           onClick={() => {
+                             selectPromptSuggestion(suggestion);
+                             setSelectedSuggestionIndex(-1);
+                           }}
+                           className="w-full text-left p-4 transition-all duration-200 group relative"
+                           style={{
+                             borderBottom: index < promptSuggestions.length - 1 ? `1px solid #f3f4f6` : 'none',
+                             backgroundColor: selectedSuggestionIndex === index ? '#f9fafb' : 'transparent',
+                             outline: 'none'
+                           }}
+                           onMouseEnter={(e) => {
+                             e.target.style.backgroundColor = '#f8fafc';
+                             setSelectedSuggestionIndex(index);
+                           }}
+                           onMouseLeave={(e) => {
+                             e.target.style.backgroundColor = selectedSuggestionIndex === index ? '#f9fafb' : 'transparent';
+                           }}
+                           role="option"
+                           aria-selected={selectedSuggestionIndex === index}
+                         >
+                           <div className="flex items-center">
+                             <span className="text-sm font-medium transition-colors duration-200" style={{
+                               color: selectedSuggestionIndex === index ? '#111827' : '#374151'
+                             }}>
+                               {suggestion}
+                             </span>
+                             {selectedSuggestionIndex === index && (
+                               <div className="ml-auto opacity-60">
+                                 <ArrowUp className="w-3 h-3 rotate-90" style={{color: '#6b7280'}} />
+                               </div>
+                             )}
+                           </div>
+                         </button>
+                       ))
+                     )}
+                   </div>
+                   <div className="px-4 py-2 bg-gray-50 border-t border-gray-100">
+                     <div className="flex items-center justify-between text-xs text-gray-500">
+                       <span>Use ↑↓ to navigate</span>
+                       <span>Enter to select • Esc to close</span>
+                     </div>
+                   </div>
+                 </div>
+               )}
             </div>
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 flex items-center">
-              {/* SpeakSphere Link */}
+             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+               {/* Enhanced Voice Search Button */}
+               <button
+                 type="button"
+                 onClick={isListening ? stopVoiceSearch : startVoiceSearch}
+                 className="p-3 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                 style={{
+                   color: isListening ? '#ffffff' : '#6b7280',
+                   backgroundColor: isListening ? '#ef4444' : 'transparent',
+                   border: isListening ? 'none' : '1px solid #e5e5e5'
+                 }}
+                 onMouseEnter={(e) => {
+                   if (!isListening) {
+                     e.target.style.backgroundColor = '#f9fafb';
+                     e.target.style.color = '#374151';
+                     e.target.style.borderColor = '#d1d5db';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (!isListening) {
+                     e.target.style.backgroundColor = 'transparent';
+                     e.target.style.color = '#6b7280';
+                     e.target.style.borderColor = '#e5e5e5';
+                   }
+                 }}
+                 title={isListening ? "Stop listening" : "Voice search"}
+                 aria-label={isListening ? "Stop voice search" : "Start voice search"}
+               >
+                 {isListening ? (
+                   <div className="relative">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                       <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                       <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                       <line x1="12" x2="12" y1="19" y2="22"></line>
+                     </svg>
+                     <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                   </div>
+                 ) : (
+                   <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                     <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
+                     <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
+                     <line x1="12" x2="12" y1="19" y2="22"></line>
+                   </svg>
+                 )}
+               </button>
 
-              {/* Voice Search Button */}
-              <button
-                type="button"
-                onClick={isListening ? stopVoiceSearch : startVoiceSearch}
-                className="p-2 transition-colors duration-200"
-                style={{color: isListening ? '#ef4444' : '#e5e5e5'}}
-                onMouseEnter={(e) => !isListening && (e.target.style.color = '#666666')}
-                onMouseLeave={(e) => !isListening && (e.target.style.color = '#e5e5e5')}
-                title={isListening ? "Stop listening" : "Voice search"}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"></path>
-                  <path d="M19 10v2a7 7 0 0 1-14 0v-2"></path>
-                  <line x1="12" x2="12" y1="19" y2="22"></line>
-                </svg>
-              </button>
-
-              <button
-                type="submit"
-                disabled={!prompt.trim() || loading}
-                className="p-2 transition-colors duration-200"
-                style={{color: !prompt.trim() || loading ? '#e5e5e5' : '#666666'}}
-                onMouseEnter={(e) => (!prompt.trim() || loading) ? null : (e.target.style.color = '#000000')}
-                onMouseLeave={(e) => (!prompt.trim() || loading) ? null : (e.target.style.color = '#666666')}
-                title="Submit"
-              >
-
-                {loading ? (
-                  <span className="text-xs">Loading...</span>
-                ) : (
-                  <ArrowUp className="w-4 h-4" />
-                )}
-              </button>
-            </div>
+               {/* Enhanced Submit Button */}
+               <button
+                 type="submit"
+                 disabled={!prompt.trim() || loading}
+                 className="p-3 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
+                 style={{
+                   color: (!prompt.trim() || loading) ? '#9ca3af' : '#ffffff',
+                   backgroundColor: (!prompt.trim() || loading) ? '#f3f4f6' : '#374151',
+                   border: 'none',
+                   boxShadow: (!prompt.trim() || loading) ? 'none' : '0 2px 8px rgba(0, 0, 0, 0.1)'
+                 }}
+                 onMouseEnter={(e) => {
+                   if (prompt.trim() && !loading) {
+                     e.target.style.backgroundColor = '#111827';
+                     e.target.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.15)';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (prompt.trim() && !loading) {
+                     e.target.style.backgroundColor = '#374151';
+                     e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                   }
+                 }}
+                 title={loading ? "Processing your request..." : "Submit search"}
+                 aria-label={loading ? "Loading" : "Submit search"}
+               >
+                 {loading ? (
+                   <div className="flex items-center">
+                     <RefreshCw className="w-4 h-4 animate-spin mr-1" />
+                     <span className="text-xs font-medium">Processing</span>
+                   </div>
+                 ) : (
+                   <ArrowUp className="w-4 h-4" />
+                 )}
+               </button>
+             </div>
           </form>
 
-          {/* Voice Transcript Display */}
-          {isListening && (
-            <div className="mt-2 text-sm flex items-center" style={{color: '#666666'}}>
-              <div className="w-1.5 h-1.5 bg-red-500 rounded-full mr-2 animate-pulse"></div>
-              <div className="flex-1">
-                {transcript ? transcript : "Listening..."}
-              </div>
-              <div className="flex">
-                <button
-                  onClick={submitVoiceSearch}
-                  disabled={!transcript.trim()}
-                  className="p-1 transition-colors duration-200"
-                  style={{color: transcript.trim() ? '#666666' : '#e5e5e5'}}
-                  onMouseEnter={(e) => transcript.trim() && (e.target.style.color = '#000000')}
-                  onMouseLeave={(e) => transcript.trim() && (e.target.style.color = '#666666')}
-                  title="Use this transcript"
-                >
-                  <ArrowUp className="w-3 h-3" />
-                </button>
-                <button
-                  onClick={stopVoiceSearch}
-                  className="p-1 transition-colors duration-200"
-                  style={{color: '#666666'}}
-                  onMouseEnter={(e) => e.target.style.color = '#000000'}
-                  onMouseLeave={(e) => e.target.style.color = '#666666'}
-                  title="Cancel"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <path d="M18 6 6 18"></path>
-                    <path d="m6 6 12 12"></path>
-                  </svg>
-                </button>
-              </div>
-            </div>
-          )}
+           {/* Enhanced Voice Transcript Display */}
+           {isListening && (
+             <div className="mt-3 p-3 rounded-lg border animate-in slide-in-from-top-2 duration-200" style={{
+               backgroundColor: '#fef2f2',
+               borderColor: '#fecaca',
+               color: '#991b1b'
+             }}>
+               <div className="flex items-center justify-between">
+                 <div className="flex items-center flex-1">
+                   <div className="relative mr-3">
+                     <div className="w-3 h-3 bg-red-500 rounded-full animate-pulse"></div>
+                     <div className="absolute inset-0 w-3 h-3 bg-red-500 rounded-full animate-ping opacity-30"></div>
+                   </div>
+                   <div className="flex-1">
+                     <div className="text-sm font-medium mb-1">Listening...</div>
+                     {transcript && (
+                       <div className="text-sm opacity-90 italic">"{transcript}"</div>
+                     )}
+                   </div>
+                 </div>
+                 <div className="flex gap-1 ml-3">
+                   <button
+                     onClick={submitVoiceSearch}
+                     disabled={!transcript.trim()}
+                     className="p-2 rounded-md transition-all duration-200 hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed"
+                     style={{
+                       color: transcript.trim() ? '#ffffff' : '#9ca3af',
+                       backgroundColor: transcript.trim() ? '#10b981' : '#f3f4f6'
+                     }}
+                     onMouseEnter={(e) => {
+                       if (transcript.trim()) {
+                         e.target.style.backgroundColor = '#059669';
+                       }
+                     }}
+                     onMouseLeave={(e) => {
+                       if (transcript.trim()) {
+                         e.target.style.backgroundColor = '#10b981';
+                       }
+                     }}
+                     title="Use this transcript"
+                     aria-label="Submit voice transcript"
+                   >
+                     <ArrowUp className="w-3 h-3" />
+                   </button>
+                   <button
+                     onClick={stopVoiceSearch}
+                     className="p-2 rounded-md transition-all duration-200 hover:scale-105 active:scale-95"
+                     style={{
+                       color: '#ffffff',
+                       backgroundColor: '#ef4444'
+                     }}
+                     onMouseEnter={(e) => e.target.style.backgroundColor = '#dc2626'}
+                     onMouseLeave={(e) => e.target.style.backgroundColor = '#ef4444'}
+                     title="Stop listening"
+                     aria-label="Stop voice search"
+                   >
+                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                       <path d="M18 6 6 18"></path>
+                       <path d="m6 6 12 12"></path>
+                     </svg>
+                   </button>
+                 </div>
+               </div>
+             </div>
+           )}
 
-          {/* Action buttons */}
-          <div className="flex justify-center gap-3 mt-6">
-            <button
-              className="px-3 py-1.5 text-xs transition-colors duration-200"
-              style={{color: '#666666'}}
-              onMouseEnter={(e) => e.target.style.color = '#000000'}
-              onMouseLeave={(e) => e.target.style.color = '#666666'}
-              onClick={() => {
-                if (response || error) {
-                  handleReset();
-                } else {
-                  setShowInspirationalModal(true);
-                }
-              }}
-            >
-              {response || error ? 'Reset' : 'Reimagine'}
-            </button>
+           {/* Action buttons - organized in grid for better layout */}
+           <div className="grid grid-cols-2 md:grid-cols-3 gap-3 mt-6 max-w-4xl mx-auto">
+             {/* Search Options Group */}
+             <div className="col-span-2 md:col-span-1 space-y-2">
+               <div className="text-xs text-gray-500 mb-2">Search Options</div>
 
-            {/* Web Search Toggle */}
-            <button
-              className="px-3 py-1.5 text-xs transition-colors duration-200 flex items-center"
-              style={{
-                color: webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')
-                  ? '#eab308'
-                  : enableWebSearch
-                    ? '#16a34a'
-                    : '#666666'
-              }}
-              onMouseEnter={(e) => {
-                if (webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')) {
-                  e.target.style.color = '#ca8a04';
-                } else if (enableWebSearch) {
-                  e.target.style.color = '#15803d';
-                } else {
-                  e.target.style.color = '#000000';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')) {
-                  e.target.style.color = '#eab308';
-                } else if (enableWebSearch) {
-                  e.target.style.color = '#16a34a';
-                } else {
-                  e.target.style.color = '#666666';
-                }
-              }}
-              onClick={() => setEnableWebSearch(!enableWebSearch)}
-              title={
-                webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')
-                  ? "Web search API not properly configured"
-                  : enableWebSearch
-                    ? "Web search enabled"
-                    : "Web search disabled"
-              }
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              {webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')
-                ? "Web Search: Not Configured"
-                : enableWebSearch
-                  ? "Web Search: On"
-                  : "Web Search: Off"
-              }
-            </button>
+               {/* Web Search Toggle */}
+               <button
+                 className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                 style={{
+                   color: webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')
+                     ? '#eab308'
+                     : enableWebSearch
+                       ? '#16a34a'
+                       : '#666666'
+                 }}
+                 onMouseEnter={(e) => {
+                   if (webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')) {
+                     e.target.style.color = '#ca8a04';
+                   } else if (enableWebSearch) {
+                     e.target.style.color = '#15803d';
+                   } else {
+                     e.target.style.color = '#000000';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')) {
+                     e.target.style.color = '#eab308';
+                   } else if (enableWebSearch) {
+                     e.target.style.color = '#16a34a';
+                   } else {
+                     e.target.style.color = '#666666';
+                   }
+                 }}
+                 onClick={() => setEnableWebSearch(!enableWebSearch)}
+                 title={
+                   webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')
+                     ? "Web search API not properly configured"
+                     : enableWebSearch
+                       ? "Web search enabled"
+                       : "Web search disabled"
+                 }
+               >
+                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                   <circle cx="11" cy="11" r="8"></circle>
+                   <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                 </svg>
+                 {webSearchMetadata && webSearchMetadata.webSearchError && webSearchMetadata.webSearchError.includes('API not configured')
+                   ? "Web Search: Not Configured"
+                   : enableWebSearch
+                     ? "Web Search: On"
+                     : "Web Search: Off"
+                 }
+               </button>
 
-            {/* Academic Search Toggle */}
-            <button
-              className="px-3 py-1.5 text-xs transition-colors duration-200 flex items-center"
-              style={{
-                color: webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')
-                  ? '#eab308'
-                  : enableAcademicSearch
-                    ? '#2563eb'
-                    : '#666666'
-              }}
-              onMouseEnter={(e) => {
-                if (webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')) {
-                  e.target.style.color = '#ca8a04';
-                } else if (enableAcademicSearch) {
-                  e.target.style.color = '#1d4ed8';
-                } else {
-                  e.target.style.color = '#000000';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')) {
-                  e.target.style.color = '#eab308';
-                } else if (enableAcademicSearch) {
-                  e.target.style.color = '#2563eb';
-                } else {
-                  e.target.style.color = '#666666';
-                }
-              }}
-              onClick={() => setEnableAcademicSearch(!enableAcademicSearch)}
-              title={
-                webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')
-                  ? "Academic search API not properly configured"
-                  : enableAcademicSearch
-                    ? "Academic search enabled (ArXiv papers)"
-                    : "Academic search disabled"
-              }
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
-                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
-              </svg>
-              {webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')
-                ? "ArXiv: Not Configured"
-                : enableAcademicSearch
-                  ? "ArXiv: On"
-                  : "ArXiv: Off"
-              }
-            </button>
+               {/* Academic Search Toggle */}
+               <button
+                 className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                 style={{
+                   color: webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')
+                     ? '#eab308'
+                     : enableAcademicSearch
+                       ? '#2563eb'
+                       : '#666666'
+                 }}
+                 onMouseEnter={(e) => {
+                   if (webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')) {
+                     e.target.style.color = '#ca8a04';
+                   } else if (enableAcademicSearch) {
+                     e.target.style.color = '#1d4ed8';
+                   } else {
+                     e.target.style.color = '#000000';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')) {
+                     e.target.style.color = '#eab308';
+                   } else if (enableAcademicSearch) {
+                     e.target.style.color = '#2563eb';
+                   } else {
+                     e.target.style.color = '#666666';
+                   }
+                 }}
+                 onClick={() => setEnableAcademicSearch(!enableAcademicSearch)}
+                 title={
+                   webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')
+                     ? "Academic search API not properly configured"
+                     : enableAcademicSearch
+                       ? "Academic search enabled (ArXiv papers)"
+                       : "Academic search disabled"
+                 }
+               >
+                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                   <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                   <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                 </svg>
+                 {webSearchMetadata && webSearchMetadata.academicSearchError && webSearchMetadata.academicSearchError.includes('API not configured')
+                   ? "ArXiv: Not Configured"
+                   : enableAcademicSearch
+                     ? "ArXiv: On"
+                     : "ArXiv: Off"
+                 }
+               </button>
 
-            {/* Prompt Suggestions Toggle */}
-            <button
-              className="px-3 py-1.5 text-xs transition-colors duration-200 flex items-center"
-              style={{
-                color: enablePromptSuggestions ? '#9333ea' : '#666666'
-              }}
-              onMouseEnter={(e) => {
-                if (enablePromptSuggestions) {
-                  e.target.style.color = '#7c3aed';
-                } else {
-                  e.target.style.color = '#000000';
-                }
-              }}
-              onMouseLeave={(e) => {
-                if (enablePromptSuggestions) {
-                  e.target.style.color = '#9333ea';
-                } else {
-                  e.target.style.color = '#666666';
-                }
-              }}
-              onClick={() => setEnablePromptSuggestions(!enablePromptSuggestions)}
-              title={enablePromptSuggestions ? "Prompt suggestions enabled" : "Prompt suggestions disabled"}
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
-                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-              </svg>
-              {enablePromptSuggestions ? "Suggestions: On" : "Suggestions: Off"}
-            </button>
+               {/* Prompt Suggestions Toggle */}
+               <button
+                 className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                 style={{
+                   color: enablePromptSuggestions ? '#9333ea' : '#666666'
+                 }}
+                 onMouseEnter={(e) => {
+                   if (enablePromptSuggestions) {
+                     e.target.style.color = '#7c3aed';
+                   } else {
+                     e.target.style.color = '#000000';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (enablePromptSuggestions) {
+                     e.target.style.color = '#9333ea';
+                   } else {
+                     e.target.style.color = '#666666';
+                   }
+                 }}
+                 onClick={() => setEnablePromptSuggestions(!enablePromptSuggestions)}
+                 title={enablePromptSuggestions ? "Prompt suggestions enabled" : "Prompt suggestions disabled"}
+               >
+                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-2">
+                   <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                 </svg>
+                 {enablePromptSuggestions ? "Suggestions: On" : "Suggestions: Off"}
+               </button>
+             </div>
 
-            {/* Screen Recording Button */}
-            {!isRecording && !recordedVideo && (
-              <button
-                className="px-3 py-1.5 text-xs transition-colors duration-200"
-                style={{color: '#666666'}}
-                onMouseEnter={(e) => e.target.style.color = '#000000'}
-                onMouseLeave={(e) => e.target.style.color = '#666666'}
-                onClick={startScreenRecording}
-                title="Record your screen"
-              >
-                <Video className="w-3 h-3 inline-block mr-1" />
-                Record
-              </button>
-            )}
+             {/* Tools Group */}
+             <div className="col-span-2 md:col-span-1 space-y-2">
+               <div className="text-xs text-gray-500 mb-2">Tools</div>
 
-            {/* GitHub Analysis Button */}
-            <button
-              className="px-3 py-1.5 text-xs transition-colors duration-200"
-              style={{color: '#666666'}}
-              onMouseEnter={(e) => e.target.style.color = '#000000'}
-              onMouseLeave={(e) => e.target.style.color = '#666666'}
-              onClick={showGithubAnalysisModal}
-              title="Analyze GitHub repository or user profile"
-            >
-              <Github className="w-3 h-3 inline-block mr-1" />
-              GitHub Analysis
-            </button>
+               {/* Screen Recording Button */}
+               {!isRecording && !recordedVideo && (
+                 <button
+                   className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                   style={{color: '#666666'}}
+                   onMouseEnter={(e) => e.target.style.color = '#000000'}
+                   onMouseLeave={(e) => e.target.style.color = '#666666'}
+                   onClick={startScreenRecording}
+                   title="Record your screen"
+                 >
+                   <Video className="w-3 h-3 mr-2" />
+                   Record Screen
+                 </button>
+               )}
 
-            {/* EDI Button */}
-            <a
-              href="/edi"
-              className="px-3 py-1.5 text-xs transition-colors duration-200"
-              style={{color: '#666666'}}
-              onMouseEnter={(e) => e.target.style.color = '#000000'}
-              onMouseLeave={(e) => e.target.style.color = '#666666'}
-              title="Open Code Editor"
-            >
-              <Code className="w-3 h-3 inline-block mr-1" />
-              Code Editor
-            </a>
+               {/* Recording in Progress */}
+               {isRecording && (
+                 <button
+                   className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                   style={{color: '#ef4444'}}
+                   onMouseEnter={(e) => e.target.style.color = '#dc2626'}
+                   onMouseLeave={(e) => e.target.style.color = '#ef4444'}
+                   onClick={stopScreenRecording}
+                   title="Stop recording"
+                 >
+                   <StopCircle className="w-3 h-3 mr-2" />
+                   {formatRecordingTime(recordingTime)}
+                 </button>
+               )}
 
+               {/* Download Recorded Video */}
+               {recordedVideo && !isRecording && (
+                 <button
+                   className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                   style={{color: '#666666'}}
+                   onMouseEnter={(e) => e.target.style.color = '#000000'}
+                   onMouseLeave={(e) => e.target.style.color = '#666666'}
+                   onClick={() => setShowExportOptions(true)}
+                   title="Export options"
+                 >
+                   <Download className="w-3 h-3 mr-2" />
+                   Export Recording
+                 </button>
+               )}
 
+               {/* GitHub Analysis Button */}
+               <button
+                 className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                 style={{color: '#666666'}}
+                 onMouseEnter={(e) => e.target.style.color = '#000000'}
+                 onMouseLeave={(e) => e.target.style.color = '#666666'}
+                 onClick={showGithubAnalysisModal}
+                 title="Analyze GitHub repository or user profile"
+               >
+                 <Github className="w-3 h-3 mr-2" />
+                 GitHub Analysis
+               </button>
 
-            {/* Recording in Progress */}
-            {isRecording && (
-              <button
-                className="px-3 py-1.5 text-xs transition-colors duration-200"
-                style={{color: '#ef4444'}}
-                onMouseEnter={(e) => e.target.style.color = '#dc2626'}
-                onMouseLeave={(e) => e.target.style.color = '#ef4444'}
-                onClick={stopScreenRecording}
-                title="Stop recording"
-              >
-                <StopCircle className="w-3 h-3 inline-block mr-1" />
-                {formatRecordingTime(recordingTime)}
-              </button>
-            )}
+               {/* EDI Button */}
+               <a
+                 href="/edi"
+                 className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                 style={{color: '#666666'}}
+                 onMouseEnter={(e) => e.target.style.color = '#000000'}
+                 onMouseLeave={(e) => e.target.style.color = '#666666'}
+                 title="Open Code Editor"
+               >
+                 <Code className="w-3 h-3 mr-2" />
+                 Code Editor
+               </a>
+             </div>
 
-            {/* Download Recorded Video */}
-            {recordedVideo && !isRecording && (
-              <button
-                className="px-3 py-1.5 text-xs transition-colors duration-200"
-                style={{color: '#666666'}}
-                onMouseEnter={(e) => e.target.style.color = '#000000'}
-                onMouseLeave={(e) => e.target.style.color = '#666666'}
-                onClick={() => setShowExportOptions(true)}
-                title="Export options"
-              >
-                <Download className="w-3 h-3 inline-block mr-1" />
-                Export
-              </button>
-            )}
-          </div>
+             {/* General Actions Group */}
+             <div className="col-span-2 md:col-span-1 space-y-2">
+               <div className="text-xs text-gray-500 mb-2">Actions</div>
+
+               <button
+                 className="w-full px-3 py-2 text-xs transition-colors duration-200 flex items-center justify-start"
+                 style={{color: '#666666'}}
+                 onMouseEnter={(e) => e.target.style.color = '#000000'}
+                 onMouseLeave={(e) => e.target.style.color = '#666666'}
+                 onClick={() => {
+                   if (response || error) {
+                     handleReset();
+                   } else {
+                     setShowInspirationalModal(true);
+                   }
+                 }}
+               >
+                 <RefreshCw className="w-3 h-3 mr-2" />
+                 {response || error ? 'Reset' : 'Reimagine'}
+               </button>
+             </div>
+           </div>
 
           {/* Topic suggestions */}
           <div className="mt-8">
@@ -1667,36 +1851,46 @@ If the problem persists, the server might be down or experiencing issues.
         ></div>
       )}
 
-      {/* Inspirational Modal */}
-      {showInspirationalModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30"
-          style={{
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)'
-          }}
-        >
-          <div
-            className="rounded-md shadow-lg max-w-3xl w-full p-6 max-h-[80vh] overflow-y-auto"
-            style={{
-              backgroundColor: '#ffffff',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-              border: '1px solid #e5e5e5'
-            }}
-          >
+       {/* Inspirational Modal */}
+       {showInspirationalModal && (
+         <div
+           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30"
+           style={{
+             backdropFilter: 'blur(8px)',
+             WebkitBackdropFilter: 'blur(8px)'
+           }}
+         >
+           <div
+             className="rounded-xl shadow-lg max-w-3xl w-full p-6 max-h-[80vh] overflow-y-auto"
+             style={{
+               backgroundColor: '#ffffff',
+               backdropFilter: 'blur(12px)',
+               WebkitBackdropFilter: 'blur(12px)',
+               boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+               border: '1px solid #e5e5e5'
+             }}
+           >
             <div className="flex justify-between items-center mb-4">
-              Education
-              <button
-                onClick={() => setShowInspirationalModal(false)}
-                className="transition-colors duration-200"
-                style={{color: '#666666'}}
-                onMouseEnter={(e) => e.target.style.color = '#000000'}
-                onMouseLeave={(e) => e.target.style.color = '#666666'}
-                aria-label="Close modal"
-                title="Close"
-              >
+               <h2 className="text-xl font-semibold" style={{color: '#111827'}}>Education</h2>
+               <button
+                 onClick={() => setShowInspirationalModal(false)}
+                 className="p-2 rounded-lg transition-all duration-200 hover:scale-110 active:scale-95"
+                 style={{
+                   color: '#666666',
+                   backgroundColor: '#f9fafb',
+                   border: 'none'
+                 }}
+                 onMouseEnter={(e) => {
+                   e.target.style.backgroundColor = '#f3f4f6';
+                   e.target.style.color = '#374151';
+                 }}
+                 onMouseLeave={(e) => {
+                   e.target.style.backgroundColor = '#f9fafb';
+                   e.target.style.color = '#666666';
+                 }}
+                 aria-label="Close modal"
+                 title="Close"
+               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-x"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
               </button>
             </div>
@@ -1706,25 +1900,25 @@ If the problem persists, the server might be down or experiencing issues.
         </div>
       )}
 
-      {/* Microphone Prompt Modal */}
-      {showMicPrompt && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30"
-          style={{
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)'
-          }}
-        >
-          <div
-            className="rounded-md shadow-lg max-w-3xl w-full p-6 max-h-[80vh] overflow-y-auto"
-            style={{
-              backgroundColor: '#ffffff',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-              border: '1px solid #e5e5e5'
-            }}
-          >
+       {/* Microphone Prompt Modal */}
+       {showMicPrompt && (
+         <div
+           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30"
+           style={{
+             backdropFilter: 'blur(8px)',
+             WebkitBackdropFilter: 'blur(8px)'
+           }}
+         >
+           <div
+             className="rounded-xl shadow-lg max-w-3xl w-full p-6 max-h-[80vh] overflow-y-auto"
+             style={{
+               backgroundColor: '#ffffff',
+               backdropFilter: 'blur(12px)',
+               WebkitBackdropFilter: 'blur(12px)',
+               boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+               border: '1px solid #e5e5e5'
+             }}
+           >
             <div className="flex justify-between items-center mb-4">
               Microphone
               <button
@@ -1743,39 +1937,57 @@ If the problem persists, the server might be down or experiencing issues.
               Include audio from your microphone in the recording?
             </p>
 
-            <div className="flex flex-col space-y-2">
-              <button
-                onClick={() => confirmRecording(true)}
-                className="transition-colors duration-200"
-                style={{color: '#666666'}}
-                onMouseEnter={(e) => e.target.style.color = '#000000'}
-                onMouseLeave={(e) => e.target.style.color = '#666666'}
-              >
-                <Mic className="w-3 h-3 mr-1" />
-                Yes, enable microphone
-              </button>
+             <div className="flex flex-col space-y-3">
+               <button
+                 onClick={() => confirmRecording(true)}
+                 className="flex items-center justify-start p-3 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                 style={{
+                   color: '#ffffff',
+                   backgroundColor: '#374151',
+                   border: 'none'
+                 }}
+                 onMouseEnter={(e) => e.target.style.backgroundColor = '#111827'}
+                 onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+               >
+                 <Mic className="w-4 h-4 mr-3" />
+                 <span className="font-medium">Yes, enable microphone</span>
+               </button>
 
-              <button
-                onClick={() => confirmRecording(false)}
-                className="transition-colors duration-200"
-                style={{color: '#666666'}}
-                onMouseEnter={(e) => e.target.style.color = '#000000'}
-                onMouseLeave={(e) => e.target.style.color = '#666666'}
-              >
-                <MicOff className="w-3 h-3 mr-1" />
-                No, record without audio
-              </button>
+               <button
+                 onClick={() => confirmRecording(false)}
+                 className="flex items-center justify-start p-3 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                 style={{
+                   color: '#ffffff',
+                   backgroundColor: '#374151',
+                   border: 'none'
+                 }}
+                 onMouseEnter={(e) => e.target.style.backgroundColor = '#111827'}
+                 onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+               >
+                 <MicOff className="w-4 h-4 mr-3" />
+                 <span className="font-medium">No, record without audio</span>
+               </button>
 
-              <button
-                onClick={() => setShowMicPrompt(false)}
-                className="transition-colors duration-200"
-                style={{color: '#666666'}}
-                onMouseEnter={(e) => e.target.style.color = '#000000'}
-                onMouseLeave={(e) => e.target.style.color = '#666666'}
-              >
-                Cancel
-              </button>
-            </div>
+               <button
+                 onClick={() => setShowMicPrompt(false)}
+                 className="flex items-center justify-center p-3 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+                 style={{
+                   color: '#666666',
+                   backgroundColor: '#f9fafb',
+                   border: '1px solid #e5e5e5'
+                 }}
+                 onMouseEnter={(e) => {
+                   e.target.style.backgroundColor = '#f3f4f6';
+                   e.target.style.color = '#374151';
+                 }}
+                 onMouseLeave={(e) => {
+                   e.target.style.backgroundColor = '#f9fafb';
+                   e.target.style.color = '#666666';
+                 }}
+               >
+                 <span className="font-medium">Cancel</span>
+               </button>
+             </div>
 
             <p className="text-xs mt-4" style={{color: '#666666', opacity: 0.7}}>
               You'll need to grant browser permissions to record your screen.
@@ -1784,25 +1996,25 @@ If the problem persists, the server might be down or experiencing issues.
         </div>
       )}
 
-      {/* GitHub Analysis Modal */}
-      {showGithubModal && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30"
-          style={{
-            backdropFilter: 'blur(8px)',
-            WebkitBackdropFilter: 'blur(8px)'
-          }}
-        >
-          <div
-            className="rounded-md shadow-lg max-w-3xl w-full p-6 max-h-[80vh] overflow-y-auto"
-            style={{
-              backgroundColor: '#ffffff',
-              backdropFilter: 'blur(8px)',
-              WebkitBackdropFilter: 'blur(8px)',
-              boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)',
-              border: '1px solid #e5e5e5'
-            }}
-          >
+       {/* GitHub Analysis Modal */}
+       {showGithubModal && (
+         <div
+           className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-30"
+           style={{
+             backdropFilter: 'blur(8px)',
+             WebkitBackdropFilter: 'blur(8px)'
+           }}
+         >
+           <div
+             className="rounded-xl shadow-lg max-w-3xl w-full p-6 max-h-[80vh] overflow-y-auto"
+             style={{
+               backgroundColor: '#ffffff',
+               backdropFilter: 'blur(12px)',
+               WebkitBackdropFilter: 'blur(12px)',
+               boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+               border: '1px solid #e5e5e5'
+             }}
+           >
             <div className="flex justify-between items-center mb-4">
               GitHub Analysis
               <button
@@ -1853,39 +2065,82 @@ If the problem persists, the server might be down or experiencing issues.
                   Enter a GitHub repository URL to explore its structure, purpose, and key features with clarity.
                 </p>
 
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    value={githubRepo}
-                    onChange={(e) => setGithubRepo(e.target.value)}
-                    placeholder="https://github.com/username/repository"
-                    className="w-full p-2 text-sm border border-gray-200 rounded"
-                  />
-                </div>
+                 <div className="mb-4">
+                   <input
+                     type="text"
+                     value={githubRepo}
+                     onChange={(e) => setGithubRepo(e.target.value)}
+                     placeholder="https://github.com/username/repository"
+                     className="w-full p-3 text-sm border-0 rounded-lg transition-all duration-200"
+                     style={{
+                       backgroundColor: '#f9fafb',
+                       color: '#374151',
+                       border: '2px solid #e5e5e5'
+                     }}
+                     onFocus={(e) => {
+                       e.target.style.backgroundColor = '#ffffff';
+                       e.target.style.borderColor = '#d1d5db';
+                       e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                     }}
+                     onBlur={(e) => {
+                       e.target.style.backgroundColor = '#f9fafb';
+                       e.target.style.borderColor = '#e5e5e5';
+                       e.target.style.boxShadow = 'none';
+                     }}
+                   />
+                 </div>
 
-                <div className="flex justify-between mb-4">
-                  <button
-                  onClick={() => setShowGithubModal(false)}
-                  className="text-gray-500 hover:text-black transition-colors duration-200"
-                >
-                  Cancel
-                </button>
+                 <div className="flex justify-between mb-4">
+                   <button
+                     onClick={() => setShowGithubModal(false)}
+                     className="px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                     style={{
+                       color: '#666666',
+                       backgroundColor: '#f9fafb',
+                       border: '1px solid #e5e5e5'
+                     }}
+                     onMouseEnter={(e) => {
+                       e.target.style.backgroundColor = '#f3f4f6';
+                       e.target.style.color = '#374151';
+                     }}
+                     onMouseLeave={(e) => {
+                       e.target.style.backgroundColor = '#f9fafb';
+                       e.target.style.color = '#666666';
+                     }}
+                   >
+                     Cancel
+                   </button>
 
-                  <button
-                    onClick={analyzeGithubRepo}
-                    disabled={isAnalyzingRepo || !githubRepo.trim()}
-                    className="px-3 py-1.5 text-xs text-gray-500 hover:text-black transition-colors duration-200"
-                  >
-                    {isAnalyzingRepo ? (
-                      <>
-                        <RefreshCw className="w-3 h-3 inline-block mr-1 animate-spin" />
-                        Analyzing...
-                      </>
-                    ) : (
-                      'Analyze Repository'
-                    )}
-                  </button>
-                </div>
+                   <button
+                     onClick={analyzeGithubRepo}
+                     disabled={isAnalyzingRepo || !githubRepo.trim()}
+                     className="px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
+                     style={{
+                       color: (isAnalyzingRepo || !githubRepo.trim()) ? '#9ca3af' : '#ffffff',
+                       backgroundColor: (isAnalyzingRepo || !githubRepo.trim()) ? '#f3f4f6' : '#374151',
+                       border: 'none'
+                     }}
+                     onMouseEnter={(e) => {
+                       if (!isAnalyzingRepo && githubRepo.trim()) {
+                         e.target.style.backgroundColor = '#111827';
+                       }
+                     }}
+                     onMouseLeave={(e) => {
+                       if (!isAnalyzingRepo && githubRepo.trim()) {
+                         e.target.style.backgroundColor = '#374151';
+                       }
+                     }}
+                   >
+                     {isAnalyzingRepo ? (
+                       <>
+                         <RefreshCw className="w-4 h-4 inline-block mr-2 animate-spin" />
+                         <span className="font-medium">Analyzing...</span>
+                       </>
+                     ) : (
+                       <span className="font-medium">Analyze Repository</span>
+                     )}
+                   </button>
+                 </div>
               </>
             )}
 
@@ -1896,39 +2151,82 @@ If the problem persists, the server might be down or experiencing issues.
                   Enter a GitHub username or profile URL to explore their activity, skills, and contributions with clarity.
                 </p>
 
-                <div className="mb-4">
-                  <input
-                    type="text"
-                    value={githubUser}
-                    onChange={(e) => setGithubUser(e.target.value)}
-                    placeholder="username or https://github.com/username"
-                    className="w-full p-2 text-sm border border-gray-200 rounded"
-                  />
-                </div>
+                 <div className="mb-4">
+                   <input
+                     type="text"
+                     value={githubUser}
+                     onChange={(e) => setGithubUser(e.target.value)}
+                     placeholder="username or https://github.com/username"
+                     className="w-full p-3 text-sm border-0 rounded-lg transition-all duration-200"
+                     style={{
+                       backgroundColor: '#f9fafb',
+                       color: '#374151',
+                       border: '2px solid #e5e5e5'
+                     }}
+                     onFocus={(e) => {
+                       e.target.style.backgroundColor = '#ffffff';
+                       e.target.style.borderColor = '#d1d5db';
+                       e.target.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.1)';
+                     }}
+                     onBlur={(e) => {
+                       e.target.style.backgroundColor = '#f9fafb';
+                       e.target.style.borderColor = '#e5e5e5';
+                       e.target.style.boxShadow = 'none';
+                     }}
+                   />
+                 </div>
 
-                <div className="flex justify-between mb-4">
-                  <button
-                    onClick={() => setShowGithubModal(false)}
-                    className="text-gray-500 hover:text-black transition-colors duration-200"
-                  >
-                    Cancel
-                  </button>
+                 <div className="flex justify-between mb-4">
+                   <button
+                     onClick={() => setShowGithubModal(false)}
+                     className="px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                     style={{
+                       color: '#666666',
+                       backgroundColor: '#f9fafb',
+                       border: '1px solid #e5e5e5'
+                     }}
+                     onMouseEnter={(e) => {
+                       e.target.style.backgroundColor = '#f3f4f6';
+                       e.target.style.color = '#374151';
+                     }}
+                     onMouseLeave={(e) => {
+                       e.target.style.backgroundColor = '#f9fafb';
+                       e.target.style.color = '#666666';
+                     }}
+                   >
+                     Cancel
+                   </button>
 
-                  <button
-                    onClick={analyzeGithubUser}
-                    disabled={isAnalyzingUser || !githubUser.trim()}
-                    className={`px-3 py-1.5 text-xs ${isAnalyzingUser || !githubUser.trim() ? 'text-gray-300' : 'text-gray-500 hover:text-black'} transition-colors duration-200`}
-                  >
-                    {isAnalyzingUser ? (
-                      <>
-                        <RefreshCw className="w-3 h-3 inline-block mr-1 animate-spin" />
-                        Analyzing...
-                      </>
-                    ) : (
-                      'Analyze User Profile'
-                    )}
-                  </button>
-                </div>
+                   <button
+                     onClick={analyzeGithubUser}
+                     disabled={isAnalyzingUser || !githubUser.trim()}
+                     className="px-4 py-2 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 disabled:cursor-not-allowed"
+                     style={{
+                       color: (isAnalyzingUser || !githubUser.trim()) ? '#9ca3af' : '#ffffff',
+                       backgroundColor: (isAnalyzingUser || !githubUser.trim()) ? '#f3f4f6' : '#374151',
+                       border: 'none'
+                     }}
+                     onMouseEnter={(e) => {
+                       if (!isAnalyzingUser && githubUser.trim()) {
+                         e.target.style.backgroundColor = '#111827';
+                       }
+                     }}
+                     onMouseLeave={(e) => {
+                       if (!isAnalyzingUser && githubUser.trim()) {
+                         e.target.style.backgroundColor = '#374151';
+                       }
+                     }}
+                   >
+                     {isAnalyzingUser ? (
+                       <>
+                         <RefreshCw className="w-4 h-4 inline-block mr-2 animate-spin" />
+                         <span className="font-medium">Analyzing...</span>
+                       </>
+                     ) : (
+                       <span className="font-medium">Analyze User Profile</span>
+                     )}
+                   </button>
+                 </div>
               </>
             )}
 
@@ -1994,123 +2292,215 @@ If the problem persists, the server might be down or experiencing issues.
           </div>
         </div>
       )}
-
       {/* Export Options Modal */}
       {showExportOptions && (
         <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
-          <div className="bg-white rounded max-w-md w-full p-5">
+
+          <div className="bg-white rounded-xl max-w-md w-full p-6 shadow-lg" style={{
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            boxShadow: '0 10px 40px rgba(0, 0, 0, 0.15)',
+            border: '1px solid #e5e5e5'
+          }}>
             Export
             <p className="text-sm text-gray-500 mb-4">
               Choose how to export your recording:
             </p>
 
-            <div className="flex flex-col space-y-2">
-              <button
-                onClick={downloadRecording}
-                className="flex items-center justify-center px-3 py-1.5 text-xs text-gray-500 hover:text-black transition-colors duration-200"
-                disabled={isExporting}
-              >
-                <Download className="w-3 h-3 mr-1" />
-                WebM format
-              </button>
+             <div className="flex flex-col space-y-3">
+               <button
+                 onClick={downloadRecording}
+                 disabled={isExporting}
+                 className="flex items-center justify-center px-4 py-3 text-sm rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                 style={{
+                   color: isExporting ? '#9ca3af' : '#ffffff',
+                   backgroundColor: isExporting ? '#f3f4f6' : '#374151',
+                   border: 'none'
+                 }}
+                 onMouseEnter={(e) => {
+                   if (!isExporting) {
+                     e.target.style.backgroundColor = '#111827';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (!isExporting) {
+                     e.target.style.backgroundColor = '#374151';
+                   }
+                 }}
+               >
+                 <Download className="w-4 h-4 mr-3" />
+                 <span className="font-medium">WebM format</span>
+               </button>
 
-              <button
-                onClick={downloadMP4}
-                className="flex items-center justify-center px-3 py-1.5 text-xs text-gray-500 hover:text-black transition-colors duration-200"
-                disabled={isExporting}
-              >
-                {isExporting ? (
-                  <>
-                    <RefreshCw className="w-3 h-3 animate-spin mr-1" />
-                    Converting...
-                  </>
-                ) : (
-                  <>
-                    <Download className="w-3 h-3 mr-1" />
-                    MP4 format
-                  </>
-                )}
-              </button>
+               <button
+                 onClick={downloadMP4}
+                 disabled={isExporting}
+                 className="flex items-center justify-center px-4 py-3 text-sm rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                 style={{
+                   color: isExporting ? '#9ca3af' : '#ffffff',
+                   backgroundColor: isExporting ? '#f3f4f6' : '#374151',
+                   border: 'none'
+                 }}
+                 onMouseEnter={(e) => {
+                   if (!isExporting) {
+                     e.target.style.backgroundColor = '#111827';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (!isExporting) {
+                     e.target.style.backgroundColor = '#374151';
+                   }
+                 }}
+               >
+                 {isExporting ? (
+                   <>
+                     <RefreshCw className="w-4 h-4 mr-3 animate-spin" />
+                     <span className="font-medium">Converting...</span>
+                   </>
+                 ) : (
+                   <>
+                     <Download className="w-4 h-4 mr-3" />
+                     <span className="font-medium">MP4 format</span>
+                   </>
+                 )}
+               </button>
 
-              <button
-                onClick={createShareableLink}
-                className="flex items-center justify-center px-3 py-1.5 text-xs text-gray-500 hover:text-black transition-colors duration-200"
-                disabled={isExporting}
-              >
-                {isExporting ? (
-                  <>
-                    <RefreshCw className="w-3 h-3 animate-spin mr-1" />
-                    Creating link...
-                  </>
-                ) : (
-                  <>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-1">
-                      <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                      <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                    </svg>
-                    Create shareable link
-                  </>
-                )}
-              </button>
+               <button
+                 onClick={createShareableLink}
+                 disabled={isExporting}
+                 className="flex items-center justify-center px-4 py-3 text-sm rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                 style={{
+                   color: isExporting ? '#9ca3af' : '#ffffff',
+                   backgroundColor: isExporting ? '#f3f4f6' : '#374151',
+                   border: 'none'
+                 }}
+                 onMouseEnter={(e) => {
+                   if (!isExporting) {
+                     e.target.style.backgroundColor = '#111827';
+                   }
+                 }}
+                 onMouseLeave={(e) => {
+                   if (!isExporting) {
+                     e.target.style.backgroundColor = '#374151';
+                   }
+                 }}
+               >
+                 {isExporting ? (
+                   <>
+                     <RefreshCw className="w-4 h-4 mr-3 animate-spin" />
+                     <span className="font-medium">Creating link...</span>
+                   </>
+                 ) : (
+                   <>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="mr-3">
+                       <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                       <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                     </svg>
+                     <span className="font-medium">Create shareable link</span>
+                   </>
+                 )}
+               </button>
 
-              {shareableLink && (
-                <div className="mt-3 p-2 bg-gray-50 rounded">
-                  <div className="flex items-center">
-                    <input
-                      type="text"
-                      value={shareableLink}
-                      readOnly
-                      className="flex-1 p-1 text-xs border-0 bg-transparent"
-                    />
-                    <button
-                      onClick={() => {
-                        navigator.clipboard.writeText(shareableLink);
-                        alert('Link copied to clipboard!');
-                      }}
-                      className="p-1 text-gray-400 hover:text-gray-600 transition-colors duration-200"
-                      title="Copy to clipboard"
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                      </svg>
-                    </button>
-                  </div>
-                  <div className="flex mt-2 gap-2">
-                    <a
-                      href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareableLink)}&text=Sharing%20this%20educational%20resource%20with%20humility%20and%20respect.%20From%20AI%20Platform%20Education.`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center p-1 text-xs text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                    >
-                      Twitter
-                    </a>
-                    <a
-                      href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareableLink)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center p-1 text-xs text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                    >
-                      Facebook
-                    </a>
-                    <a
-                      href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareableLink)}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 flex items-center justify-center p-1 text-xs text-gray-500 hover:text-gray-700 transition-colors duration-200"
-                    >
-                      LinkedIn
-                    </a>
-                  </div>
-                </div>
-              )}
+               {shareableLink && (
+                 <div className="mt-4 p-4 rounded-lg" style={{backgroundColor: '#f9fafb', border: '1px solid #e5e5e5'}}>
+                   <div className="flex items-center mb-3">
+                     <input
+                       type="text"
+                       value={shareableLink}
+                       readOnly
+                       className="flex-1 p-2 text-sm border-0 rounded bg-white"
+                       style={{color: '#374151'}}
+                     />
+                     <button
+                       onClick={() => {
+                         navigator.clipboard.writeText(shareableLink);
+                         alert('Link copied to clipboard!');
+                       }}
+                       className="ml-2 p-2 rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                       style={{
+                         color: '#ffffff',
+                         backgroundColor: '#374151',
+                         border: 'none'
+                       }}
+                       onMouseEnter={(e) => e.target.style.backgroundColor = '#111827'}
+                       onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+                       title="Copy to clipboard"
+                     >
+                       <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                         <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                         <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                       </svg>
+                     </button>
+                   </div>
+                   <div className="flex gap-2">
+                     <a
+                       href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareableLink)}&text=Sharing%20this%20educational%20resource%20with%20humility%20and%20respect.%20From%20AI%20Platform%20Education.`}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="flex-1 flex items-center justify-center p-2 text-sm rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                       style={{
+                         color: '#ffffff',
+                         backgroundColor: '#374151',
+                         textDecoration: 'none'
+                       }}
+                       onMouseEnter={(e) => e.target.style.backgroundColor = '#111827'}
+                       onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+                     >
+                       Twitter
+                     </a>
+                     <a
+                       href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareableLink)}`}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="flex-1 flex items-center justify-center p-2 text-sm rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                       style={{
+                         color: '#ffffff',
+                         backgroundColor: '#374151',
+                         textDecoration: 'none'
+                       }}
+                       onMouseEnter={(e) => e.target.style.backgroundColor = '#111827'}
+                       onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+                     >
+                       Facebook
+                     </a>
+                     <a
+                       href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareableLink)}`}
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       className="flex-1 flex items-center justify-center p-2 text-sm rounded-lg transition-all duration-200 hover:scale-105 active:scale-95"
+                       style={{
+                         color: '#ffffff',
+                         backgroundColor: '#374151',
+                         textDecoration: 'none'
+                       }}
+                       onMouseEnter={(e) => e.target.style.backgroundColor = '#111827'}
+                       onMouseLeave={(e) => e.target.style.backgroundColor = '#374151'}
+                     >
+                       LinkedIn
+                     </a>
+                   </div>
+                 </div>
+               )}
 
-              <button
-                onClick={resetRecording}
-                className="text-xs text-gray-400 hover:text-gray-600 transition-colors duration-200 mt-2"
-              >
-                Discard recording
-              </button>
+               <button
+                 onClick={resetRecording}
+                 className="px-4 py-2 text-sm rounded-lg transition-all duration-200 hover:scale-105 active:scale-95 mt-3"
+                 style={{
+                   color: '#666666',
+                   backgroundColor: '#f9fafb',
+                   border: '1px solid #e5e5e5'
+                 }}
+                 onMouseEnter={(e) => {
+                   e.target.style.backgroundColor = '#f3f4f6';
+                   e.target.style.color = '#374151';
+                 }}
+                 onMouseLeave={(e) => {
+                   e.target.style.backgroundColor = '#f9fafb';
+                   e.target.style.color = '#666666';
+                 }}
+               >
+                 <span className="font-medium">Discard recording</span>
+               </button>
             </div>
 
             <p className="text-xs text-gray-400 mt-4">

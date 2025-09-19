@@ -37,16 +37,24 @@ const MobileMenu = ({ isOpen, onClose, onCreatePost, onToggleAIFeatures }) => {
               <span>AI Lab</span>
             </button>
 
-            <button
-              onClick={() => {
-                onCreatePost();
-                onClose();
-              }}
-              className="nav-link-wave flex items-center gap-1.5 text-gray-500 text-xs transition-colors duration-200 hover:text-black px-2 py-1 rounded-sm"
-            >
-              <Plus size={14} className="mr-1" />
-              <span>New Content</span>
-            </button>
+             <Link
+               to="/ui"
+               onClick={onClose}
+               className="nav-link-wave flex items-center gap-1.5 text-gray-500 text-xs transition-colors duration-200 hover:text-black px-2 py-1 rounded-sm"
+             >
+               <span>UI Design</span>
+             </Link>
+
+             <button
+               onClick={() => {
+                 onCreatePost();
+                 onClose();
+               }}
+               className="nav-link-wave flex items-center gap-1.5 text-gray-500 text-xs transition-colors duration-200 hover:text-black px-2 py-1 rounded-sm"
+             >
+               <Plus size={14} className="mr-1" />
+               <span>New Content</span>
+             </button>
           </div>
 
           <div className="space-y-5 py-4 mt-6">
