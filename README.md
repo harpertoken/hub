@@ -49,6 +49,41 @@ npm test       # run tests
 
 Configured for deployment on Vercel. Push changes to the main branch for automatic deployment. Configure environment variables in the Vercel dashboard.
 
+### Conventional Commits
+
+This project uses conventional commit standards to maintain a clean and consistent git history.
+
+#### Setup
+
+To enable the commit message hook:
+
+```bash
+cp scripts/commit-msg .git/hooks/commit-msg
+chmod +x .git/hooks/commit-msg
+```
+
+#### Usage
+
+Commit messages must follow the format: `type: description` where:
+- `type` is one of: feat, fix, docs, style, refactor, test, chore, perf, ci, build, revert
+- The entire first line must be lowercase
+- The first line must be ≤60 characters
+
+Examples:
+- `feat: add user authentication`
+- `fix: resolve login bug`
+- `docs: update readme`
+
+#### History Cleanup
+
+To clean up existing commit messages, use the `scripts/rewrite_msg.sh` script:
+
+```bash
+./scripts/rewrite_msg.sh <commit-hash>
+```
+
+This will rewrite the commit message to be lowercase and truncated to 60 characters.
+
 ### Contributing
 
 To contribute, fork the repository, make changes, ensure tests pass, and submit a pull request. Maintain code quality.
